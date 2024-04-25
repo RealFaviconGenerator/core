@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RealFaviconGenerator/realfavicon-cli.git"
+    "url": "git@github.com:RealFaviconGenerator/core.git"
   },
   "keywords": [
     "favicon",
