@@ -23,9 +23,9 @@
   "author": "Philippe Bernard",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/RealFaviconGenerator/realfavicon-cli/issues"
+    "url": "https://github.com/RealFaviconGenerator/core/issues"
   },
-  "homepage": "https://github.com/RealFaviconGenerator/realfavicon-cli#readme",
+  "homepage": "https://github.com/RealFaviconGenerator/core#readme",
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.6",
     "@types/jest": "^29.5.12",

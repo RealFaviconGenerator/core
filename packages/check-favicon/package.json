@@ -23,9 +23,9 @@
   "author": "Philippe Bernard",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/RealFaviconGenerator/check-favicon/issues"
+    "url": "https://github.com/RealFaviconGenerator/core/issues"
   },
-  "homepage": "https://github.com/RealFaviconGenerator/check-favicon#readme",
+  "homepage": "https://github.com/RealFaviconGenerator/core#readme",
   "devDependencies": {
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.30",
