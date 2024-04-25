@@ -17,7 +17,8 @@
     "favicon",
     "RealFaviconGenerator",
     "CLI",
-    "check"
+    "check",
+    "RFG"
   ],
   "author": "Philippe Bernard",
   "license": "ISC",
