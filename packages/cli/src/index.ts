@@ -3,13 +3,14 @@
 import { Command } from 'commander'
 import { CheckExamples } from '@/example'
 import { check, stringToScreen } from '@/check'
+import p from '../package.json'
 
 const program = new Command();
 
 program
   .name('realfavicon')
   .description('Create and check favicon with RealFaviconGenerator')
-  .version('0.0.1');
+  .version(p.version);
 
 program.command('check')
   .description('Check a favicon')

@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@realfavicongenerator/check-favicon": "^0.2.0",
+    "@rollup/plugin-json": "^6.1.0",
     "@types/node": "^20.12.2",
     "commander": "^12.0.0",
     "node-html-parser": "^6.1.13",
