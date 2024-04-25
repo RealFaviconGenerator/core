@@ -1,0 +1,41 @@
+{
+  "name": "@realfavicongenerator/check-favicon",
+  "version": "0.1.1",
+  "description": "Check the favicon of a website",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RealFaviconGenerator/check-favicon.git"
+  },
+  "keywords": [
+    "favicon",
+    "realfavicongenerator",
+    "checker",
+    "check",
+    "RFG"
+  ],
+  "author": "Philippe Bernard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RealFaviconGenerator/check-favicon/issues"
+  },
+  "homepage": "https://github.com/RealFaviconGenerator/check-favicon#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.30",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "decode-ico": "^0.4.1",
+    "node-html-parser": "^6.1.13",
+    "sharp": "^0.32.6"
+  }
+}
