@@ -111,7 +111,7 @@ export type TouchIconIconReport = {
   touchIcon: string | null,
 }
 
-export type WebManifestReport = {
+export type WebAppManifestReport = {
   messages: CheckerMessage[],
   name?: string,
   shortName?: string,
@@ -123,7 +123,7 @@ export type WebManifestReport = {
 export type FaviconReport = {
   desktop: DesktopFaviconReport,
   touchIcon: TouchIconReport,
-  webAppManifest: WebManifestReport
+  webAppManifest: WebAppManifestReport
 }
 
 export type TouchIconReport = TouchIconIconReport & TouchIconTitleReport;

@@ -1,8 +1,8 @@
 import { HTMLElement } from "node-html-parser";
-import { CheckerMessage, CheckerStatus, Fetcher, MessageId, WebManifestReport } from "./types";
+import { CheckerMessage, CheckerStatus, Fetcher, MessageId, WebAppManifestReport } from "./types";
 import { CheckIconProcessor, checkIcon, fetchFetcher, mergeUrlAndPath, pathToMimeType } from "./helper";
 
-export const checkWebAppManifest = async (baseUrl: string, head: HTMLElement | null, fetcher: Fetcher = fetchFetcher): Promise<WebManifestReport> => {
+export const checkWebAppManifest = async (baseUrl: string, head: HTMLElement | null, fetcher: Fetcher = fetchFetcher): Promise<WebAppManifestReport> => {
   const messages: CheckerMessage[] = [];
   let name = undefined;
   let shortName = undefined;
@@ -77,7 +77,7 @@ export const checkWebAppManifest = async (baseUrl: string, head: HTMLElement | n
     return { messages, name, shortName, backgroundColor, themeColor, icon };
   }
 
-  const manifestReport = await checkWebManifestFile(parsedManifest, manifestUrl, fetcher);
+  const manifestReport = await checkWebAppManifestFile(parsedManifest, manifestUrl, fetcher);
 
   return {
     ...manifestReport,
@@ -99,7 +99,7 @@ const readableStreamToJson = async (stream: ReadableStream): Promise<any> => {
   return JSON.parse(result);
 }
 
-export const checkWebManifestFile = async (manifest: any, baseUrl: string, fetcher: Fetcher): Promise<WebManifestReport> => {
+export const checkWebAppManifestFile = async (manifest: any, baseUrl: string, fetcher: Fetcher): Promise<WebAppManifestReport> => {
   const messages: CheckerMessage[] = [];
   let icon = null;
 

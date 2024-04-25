@@ -6,12 +6,12 @@ export {
   DesktopFaviconReport,
   TouchIconTitleReport,
   TouchIconIconReport,
-  WebManifestReport,
+  WebAppManifestReport,
   FaviconReport,
   TouchIconReport
 } from './types';
 
 export { checkDesktopFavicon, checkSvgFavicon } from "./desktop/desktop"
 export { checkTouchIcon } from "./touch-icon"
-export { checkWebAppManifest } from "./web-manifest"
+export { checkWebAppManifest } from "./web-app-manifest"
 export { checkFavicon } from "./check"

@@ -20,7 +20,7 @@ const head = root.querySelector('head');
 
 const desktopFaviconReport = await checkDesktopFavicon(pageUrl, head);
 const touchIconFaviconReport = await checkTouchIcon(pageUrl, head);
-const webAppManifestFaviconReport = await checkWebManifest(pageUrl, head);
+const webAppManifestFaviconReport = await checkWebAppManifest(pageUrl, head);
 
 console.log("Analysis and icons", desktopFaviconReport, touchIconFaviconReport, webAppManifestFaviconReport);
 ```

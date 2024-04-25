@@ -1,6 +1,6 @@
 import parse from "node-html-parser";
-import { CheckerMessage, CheckerStatus, FetchResponse, MessageId, WebManifestReport } from "./types";
-import { checkWebAppManifest, checkWebManifestFile } from "./web-manifest";
+import { CheckerMessage, CheckerStatus, FetchResponse, MessageId, WebAppManifestReport } from "./types";
+import { checkWebAppManifest, checkWebAppManifestFile } from "./web-app-manifest";
 import { testFetcher } from "./test-helper";
 import { bufferToDataUrl, filePathToReadableStream, readableStreamToBuffer } from "./helper";
 
@@ -13,7 +13,7 @@ type TestOutput = {
   icon?: string | null
 }
 
-const filterOutput = (report: WebManifestReport): any => ({
+const filterOutput = (report: WebAppManifestReport): any => ({
   ...report,
   messages: report.messages.map(m => ({ status: m.status, id: m.id }))
 })
@@ -35,35 +35,35 @@ const runCheckTouchIconTitleTest = async (
   });
 }
 
-test('checkWebManifest - noHead', async () => {
+test('checkWebAppManifest - noHead', async () => {
   await runCheckTouchIconTitleTest(null, { messages: [{
     status: CheckerStatus.Error,
     id: MessageId.noHead,
   }]});
 })
 
-test('checkWebManifest - noManifest', async () => {
+test('checkWebAppManifest - noManifest', async () => {
   await runCheckTouchIconTitleTest('<title>Hey</title>', { messages: [{
     status: CheckerStatus.Error,
     id: MessageId.noManifest,
   }]});
 })
 
-test('checkWebManifest - noManifestHref', async () => {
+test('checkWebAppManifest - noManifestHref', async () => {
   await runCheckTouchIconTitleTest('<link rel="manifest" />', { messages: [{
     status: CheckerStatus.Error,
     id: MessageId.noManifestHref,
   }]});
 })
 
-test('checkWebManifest - manifest404', async () => {
+test('checkWebAppManifest - manifest404', async () => {
   await runCheckTouchIconTitleTest('<link rel="manifest" href="not-found.json" />', { messages: [{
     status: CheckerStatus.Error,
     id: MessageId.manifest404,
   }]});
 })
 
-test('checkWebManifest - manifestCannotGet', async () => {
+test('checkWebAppManifest - manifestCannotGet', async () => {
   await runCheckTouchIconTitleTest('<link rel="manifest" href="/error.json" />', { messages: [{
     status: CheckerStatus.Error,
     id: MessageId.manifestCannotGet,
@@ -76,7 +76,7 @@ test('checkWebManifest - manifestCannotGet', async () => {
   });
 })
 
-test('checkWebManifest - manifestInvalidJson', async () => {
+test('checkWebAppManifest - manifestInvalidJson', async () => {
   await runCheckTouchIconTitleTest('<link rel="manifest" href="/bad-manifest.json" />', { messages: [{
     status: CheckerStatus.Error,
     id: MessageId.manifestInvalidJson,
@@ -99,8 +99,8 @@ const stringToReadableStream = (str: string) => {
   return stream;
 }
 
-test('checkWebManifestFile - Missing fields', async () => {
-  const report = await checkWebManifestFile({
+test('checkWebAppManifestFile - Missing fields', async () => {
+  const report = await checkWebAppManifestFile({
     name: null,
     short_name: null,
     background_color: null,
@@ -136,8 +136,8 @@ test('checkWebManifestFile - Missing fields', async () => {
 const testIcon192 = './fixtures/192x192.png';
 const testIcon512 = './fixtures/512x512.png';
 
-test('checkWebManifestFile - Everything is fine', async () => {
-  const report = await checkWebManifestFile({
+test('checkWebAppManifestFile - Everything is fine', async () => {
+  const report = await checkWebAppManifestFile({
     name: 'My long name',
     short_name: 'Short!',
     background_color: '#123456',
