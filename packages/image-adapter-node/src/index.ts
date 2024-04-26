@@ -1,5 +1,4 @@
 import { SVG, Svg, registerWindow } from "@svgdotjs/svg.js";
-import { createSVGWindow } from "svgdom"
 import { ImageAdapter } from "@realfavicongenerator/generate-favicon";
 import sharp from "sharp";
 
@@ -11,7 +10,9 @@ const dataUrlToBuffer = async (dataUrl: string): Promise<Buffer> => {
   });
 }
 
-export const getNodeImageAdapter = (): ImageAdapter => {
+export const getNodeImageAdapter = async (): Promise<ImageAdapter> => {
+  const { createSVGWindow } = await import('svgdom');
+
   return {
     createSvg: () => {
       const window = createSVGWindow();
