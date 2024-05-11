@@ -33,7 +33,7 @@ export {
 } from './generation/web-app-manifest';
 
 export {
-  FaviconIconSettings, FaviconSettings, initFaviconIconSettings
+  FaviconIconSettings, FaviconSettings, initFaviconIconSettings, generateFaviconFiles, generateFaviconHtml
 } from './icon/index';
 
 export {
