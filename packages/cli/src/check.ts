@@ -2,8 +2,7 @@ import { CheckerMessage, CheckerStatus, FaviconReport, checkFavicon } from "@rea
 import { parse } from 'node-html-parser'
 import { getUrl } from '@/helper'
 import open from 'open'
-
-const RealFaviconGeneratorBaseUrl = 'https://next.realfavicongenerator.net/';
+import { RealFaviconGeneratorBaseUrl } from "./common.js";
 
 const statusToIcon = (status: CheckerStatus): string => {
   switch(status) {
