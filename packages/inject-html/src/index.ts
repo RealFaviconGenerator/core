@@ -1,2 +1,2 @@
 
-export { injectMarkupInHtmlHead } from './html';
+export { injectMarkupInHtmlHead, DefaultRemovedMarkupCssSelectors } from './html';
