@@ -1,5 +1,5 @@
 {
-  "name": "inject-markups",
+  "name": "@realfavicongenerator/inject-markups",
   "version": "0.2.7",
   "description": "Inject markups created by RealFaviconGenerator into an HTML document",
   "main": "index.js",
