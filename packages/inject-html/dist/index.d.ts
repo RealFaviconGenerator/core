@@ -1,0 +1,1 @@
+export { injectMarktupInHtml } from './html';

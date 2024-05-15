@@ -1,0 +1,2 @@
+
+export { injectMarkupInHtmlHead } from './html';

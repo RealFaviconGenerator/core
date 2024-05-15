@@ -1,0 +1,39 @@
+{
+  "name": "inject-html",
+  "version": "0.0.1",
+  "description": "Inject markups created by RealFaviconGenerator into an HTML document",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:RealFaviconGenerator/core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RealFaviconGenerator/core/issues"
+  },
+  "homepage": "https://github.com/RealFaviconGenerator/core#readme",
+  "keywords": [
+    "favicon",
+    "realfavicongenerator",
+    "inject",
+    "RFG"
+  ],
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/pretty": "^2.0.3",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.4.3"
+  },
+  "author": "Philippe Bernard",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12",
+    "pretty": "^2.0.0"
+  }
+}
