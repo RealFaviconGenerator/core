@@ -1,6 +1,6 @@
 {
   "name": "realfavicon",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "description": "Check favicon with RealFaviconGenerator from the CLI",
   "main": "dist/index.js",
   "bin": "./dist/index.js",
@@ -37,9 +37,9 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
-    "@realfavicongenerator/check-favicon": "^0.2.2",
-    "@realfavicongenerator/generate-favicon": "^0.2.6",
-    "@realfavicongenerator/image-adapter-node": "^0.2.6",
+    "@realfavicongenerator/check-favicon": "^0.2.7",
+    "@realfavicongenerator/generate-favicon": "^0.2.7",
+    "@realfavicongenerator/image-adapter-node": "^0.2.7",
     "@rollup/plugin-json": "^6.1.0",
     "@svgdotjs/svg.js": "^3.2.0",
     "@types/node": "^20.12.2",
