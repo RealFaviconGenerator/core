@@ -40,6 +40,7 @@
     "@realfavicongenerator/check-favicon": "^0.2.7",
     "@realfavicongenerator/generate-favicon": "^0.2.7",
     "@realfavicongenerator/image-adapter-node": "^0.2.7",
+    "@realfavicongenerator/inject-markups": "^0.2.8",
     "@rollup/plugin-json": "^6.1.0",
     "@svgdotjs/svg.js": "^3.2.0",
     "@types/node": "^20.12.2",
