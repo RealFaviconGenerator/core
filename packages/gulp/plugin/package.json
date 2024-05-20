@@ -1,0 +1,43 @@
+{
+  "name": "@realfavicongenerator/gulp-real-favicon",
+  "version": "0.2.9",
+  "description": "Generate a multiplatform favicon with RealFaviconGenerator and Gulp",
+  "main": "dist/index.js",
+  "bin": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c rollup.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:RealFaviconGenerator/core.git"
+  },
+  "keywords": [
+    "favicon",
+    "RealFaviconGenerator",
+    "gulp",
+    "gulpplugin",
+    "RFG"
+  ],
+  "author": "Philippe Bernard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RealFaviconGenerator/core/issues"
+  },
+  "homepage": "https://github.com/RealFaviconGenerator/core#readme",
+  "devDependencies": {
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/jest": "^29.5.12",
+    "rollup": "^4.13.2",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@realfavicongenerator/generate-favicon": "^0.2.7",
+    "@realfavicongenerator/image-adapter-node": "^0.2.7",
+    "@realfavicongenerator/inject-markups": "^0.2.9",
+    "@rollup/plugin-json": "^6.1.0",
+    "@types/node": "^20.12.2",
+    "plugin-error": "^2.0.1"
+  }
+}
