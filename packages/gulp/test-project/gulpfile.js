@@ -8,7 +8,7 @@ gulp.task('default', function(done) {
   }, 3000);
 });
 
-var realFavicon = require ('gulp-real-favicon');
+var realFavicon = require('@realfavicongenerator/gulp-real-favicon');
 var fs = require('fs');
 
 // File where the favicon markups are stored

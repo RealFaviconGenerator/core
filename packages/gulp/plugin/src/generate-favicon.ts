@@ -1,2 +1,4 @@
 
-export const generateFavicon = () => {}
+export const generateFavicon = (params: {}, callback: (err?: string) => void) => {
+  callback();
+}

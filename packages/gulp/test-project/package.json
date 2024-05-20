@@ -9,7 +9,7 @@
   "author": "Philippe Bernard <philippe@realfavicongenerator.net> (https://realfavicongenerator.net/)",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "@realfavicongenerator/gulp-real-favicon": "^0.2.9"
+    "@realfavicongenerator/gulp-real-favicon": "^0.2.9",
+    "gulp": "^4.0.2"
   }
 }
