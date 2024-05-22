@@ -6,8 +6,7 @@ export type TouchIconSettings = {
   appTitle: string | null
 } & EditedIcon;
 
-export const initTouchIconSettings = (icon: Svg): TouchIconSettings => ({
-  icon,
+export const initTouchIconSettings = (): TouchIconSettings => ({
   transformation: initTransformation(IconTransformationType.None, {
     imageScale: 0.7,
     backgroundColor: '#ffffff',

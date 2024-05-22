@@ -1,6 +1,6 @@
 import fs from "fs/promises"
-import { FaviconSettings, bitmapToSvg, dataUrlToSvg, generateFaviconFiles, generateFaviconHtml, stringToSvg } from '@realfavicongenerator/generate-favicon';
-import { getNodeImageAdapter } from "@realfavicongenerator/image-adapter-node";
+import { FaviconSettings, MasterIcon, bitmapToSvg, dataUrlToSvg, generateFaviconFiles, generateFaviconHtml, stringToSvg } from '@realfavicongenerator/generate-favicon';
+import { getNodeImageAdapter, loadAndConvertToSvg } from "@realfavicongenerator/image-adapter-node";
 import { Svg } from "@svgdotjs/svg.js";
 
 const toBuffer = async (data: string | Buffer | Blob): Promise<Buffer> => {
@@ -30,29 +30,19 @@ export const generate = async (imagePath: string, settingsPath: string, outputDa
   const imageAdapter = await getNodeImageAdapter();
 
   // Open master image
-  let svg: Svg;
-  if (imagePath.endsWith('.svg')) {
-    const content = await fs.readFile(imagePath, 'utf8');
-    svg = stringToSvg(content, imageAdapter);
-  } else {
-    const content = await fs.readFile(imagePath);
-    const dataUrl = `data:image/${imagePath.split('.').pop()};base64,${content.toString('base64')}`;
-    svg = await dataUrlToSvg(dataUrl, imageAdapter);
+  const masterIcon: MasterIcon = {
+    icon: await loadAndConvertToSvg(imagePath),
   }
 
   // Open settings
   const faviconSettingsFile = await fs.readFile(settingsPath, 'utf8');
   const faviconSettings: FaviconSettings = JSON.parse(faviconSettingsFile);
 
-  faviconSettings.icon.desktop.regularIcon = svg;
-  faviconSettings.icon.touch.icon = svg;
-  faviconSettings.icon.webAppManifest.icon = svg;
-
   // Create output directory
   await fs.mkdir(assetsDir, { recursive: true });
 
   // Generate files
-  const files = await generateFaviconFiles(faviconSettings, imageAdapter);
+  const files = await generateFaviconFiles(masterIcon, faviconSettings, imageAdapter);
   for await (const fileName of Object.keys(files)) {
     const file = files[fileName];
     const filePath = `${assetsDir}/${fileName}`;

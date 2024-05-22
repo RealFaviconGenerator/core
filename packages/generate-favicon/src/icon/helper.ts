@@ -2,6 +2,11 @@ import { NumberAlias, Svg, SVG } from "@svgdotjs/svg.js";
 import { TransformData } from "@svgdotjs/svg.js";
 import { ImageAdapter } from "../svg/adapter";
 
+export type MasterIcon = {
+  icon: Svg;
+  darkIcon?: Svg;
+}
+
 export enum IconTransformationType {
   None = 'none',
   Background = 'background',

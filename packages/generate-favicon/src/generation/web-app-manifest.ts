@@ -1,5 +1,5 @@
 import { FaviconAssetFileNameTransformer, FaviconAssetPathTransformer, FaviconFiles, FaviconMarkups, identityFaviconAssetFileNameTransformer, identityFaviconAssetPathTransformer } from ".";
-import { transformSvg } from "../icon/helper";
+import { MasterIcon, transformSvg } from "../icon/helper";
 import { WebAppManifestSettings } from "../icon/web-app-manifest";
 import { scaleSvg } from "../svg";
 import { ImageAdapter } from "../svg/adapter";
@@ -38,6 +38,7 @@ export const generateWebAppManifestHtml = (faviconPath: string, transformer: Fav
 }
 
 export const generateWebAppManifestIconFiles = async (
+  masterIcon: MasterIcon,
   settings: WebAppManifestSettings,
   faviconPath: string,
   imageAdapter: ImageAdapter,
@@ -45,7 +46,7 @@ export const generateWebAppManifestIconFiles = async (
   fileNameTransformer: FaviconAssetFileNameTransformer = identityFaviconAssetFileNameTransformer,
 ): Promise<FaviconFiles> => {
   const transformedIcon = transformSvg(
-    settings.icon, settings.transformation, imageAdapter, 512
+    masterIcon.icon, settings.transformation, imageAdapter, 512
   );
   const androidnIcon192 = await imageAdapter.convertSvgToPng(
     scaleSvg(transformedIcon, 192, imageAdapter)

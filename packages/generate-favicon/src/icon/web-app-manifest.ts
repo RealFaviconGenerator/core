@@ -9,8 +9,7 @@ export type WebAppManifestSettings = {
   themeColor: string
 } & EditedIcon;
 
-export const initWebAppManifestSettings = (icon: Svg): WebAppManifestSettings => ({
-  icon,
+export const initWebAppManifestSettings = (): WebAppManifestSettings => ({
   transformation: initTransformation(IconTransformationType.None, {
     imageScale: 0.7,
     backgroundColor: '#ffffff',

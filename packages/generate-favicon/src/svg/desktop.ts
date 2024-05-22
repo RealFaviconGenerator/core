@@ -1,9 +1,10 @@
 import { SVG, Style, Svg } from "@svgdotjs/svg.js";
-import { IconTransformation, IconTransformationType, getCSSFilter, isCSSFilterTransformation, transformSvg } from "../icon/helper";
+import { IconTransformation, IconTransformationType, MasterIcon, getCSSFilter, isCSSFilterTransformation, transformSvg } from "../icon/helper";
 import { DesktopIconSettings, hasDarkIcon } from "../icon/desktop";
 import { ImageAdapter } from "./adapter";
 
 export const createDesktopSvgIcon = (
+  masterIcon: MasterIcon,
   settings: DesktopIconSettings,
   imageAdapter: ImageAdapter
 ): Svg => {
@@ -20,18 +21,18 @@ export const createDesktopSvgIcon = (
     )
   ) {
     return createFilteredSvgIcon(
-      settings.regularIcon, settings.regularIconTransformation, settings.darkIconTransformation
+      masterIcon.icon, settings.regularIconTransformation, settings.darkIconTransformation
     );
   }
 
-  const lightIcon = transformSvg(settings.regularIcon, settings.regularIconTransformation, imageAdapter);
+  const lightIcon = transformSvg(masterIcon.icon, settings.regularIconTransformation, imageAdapter);
 
   // No dark icon? Done!
   if (hasDarkIcon(settings)) {
     return lightIcon;
   }
 
-  const darkIcon = transformSvg(settings.darkIcon, settings.darkIconTransformation, imageAdapter);
+  const darkIcon = transformSvg(masterIcon.darkIcon || masterIcon.icon, settings.darkIconTransformation, imageAdapter);
 
   return combineLightAndDaskModeDesktopIcons(lightIcon, darkIcon, imageAdapter);
 };

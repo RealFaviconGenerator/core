@@ -1,26 +1,22 @@
 import { Svg } from "@svgdotjs/svg.js";
-import { IconTransformation, IconTransformationType, initTransformation } from "./helper";
+import { IconTransformation, IconTransformationType, MasterIcon, initTransformation } from "./helper";
 
 export type DesktopIconSettings = {
   // Regular icon
-  regularIcon: Svg;
   regularIconTransformation: IconTransformation;
 
   // Dark icon
-  darkIcon: Svg;
   darkIconType: 'none' | 'regular' | 'specific';
   darkIconTransformation: IconTransformation;
 };
 
-export const initDesktopIconSettings = (icon: Svg): DesktopIconSettings => ({
-  darkIcon: icon,
+export const initDesktopIconSettings = (): DesktopIconSettings => ({
   darkIconTransformation: initTransformation(IconTransformationType.None, {
     imageScale: 0.7,
     backgroundColor: '#ffffff',
     backgroundRadius: 0.7
   }),
   darkIconType: 'none',
-  regularIcon: icon,
   regularIconTransformation: initTransformation(IconTransformationType.None, {
     imageScale: 0.7,
     backgroundColor: '#ffffff',
@@ -28,12 +24,12 @@ export const initDesktopIconSettings = (icon: Svg): DesktopIconSettings => ({
   })
 });
 
-export const getAppliedDarkIcon = (settings: DesktopIconSettings): {
+export const getAppliedDarkIcon = (masterIcon: MasterIcon, settings: DesktopIconSettings): {
   darkIcon: Svg, darkIconTransformation: IconTransformation
 } => {
-  const darkIcon = settings.darkIconType === 'specific'
-    ? settings.darkIcon
-    : settings.regularIcon;
+  const darkIcon = (settings.darkIconType === 'specific' && masterIcon.darkIcon)
+    ? masterIcon.darkIcon
+    : masterIcon.icon;
   const darkIconTransformation = settings.darkIconType === 'none'
     ? settings.regularIconTransformation
     : settings.darkIconTransformation;

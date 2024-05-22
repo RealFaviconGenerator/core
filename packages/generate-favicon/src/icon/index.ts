@@ -2,7 +2,7 @@ import { Svg } from "@svgdotjs/svg.js";
 import { DesktopIconSettings, initDesktopIconSettings } from "./desktop";
 import { TouchIconSettings, initTouchIconSettings } from "./ios";
 import { WebAppManifestSettings, initWebAppManifestSettings } from "./web-app-manifest";
-import { IconTransformation } from "./helper";
+import { IconTransformation, MasterIcon } from "./helper";
 import { generateDesktopFaviconFiles, generateDesktopFaviconHtml } from "../generation/desktop";
 import { generateTouchIconFiles, generateTouchIconHtml } from "../generation/touch-icon";
 import { generateWebAppManifestHtml, generateWebAppManifestIconFiles } from "../generation/web-app-manifest";
@@ -21,19 +21,19 @@ export type FaviconSettings = {
 }
 
 export type EditedIcon = {
-  icon: Svg,
   transformation: IconTransformation
 }
 
-export const initFaviconIconSettings = (svg: Svg): FaviconIconSettings => {
+export const initFaviconIconSettings = (): FaviconIconSettings => {
   return {
-    desktop: initDesktopIconSettings(svg),
-    touch: initTouchIconSettings(svg),
-    webAppManifest: initWebAppManifestSettings(svg)
+    desktop: initDesktopIconSettings(),
+    touch: initTouchIconSettings(),
+    webAppManifest: initWebAppManifestSettings()
   };
 }
 
 export const generateFaviconFiles = async (
+  masterIcon: MasterIcon,
   settings: FaviconSettings,
   imageAdapter: ImageAdapter,
   pathTransformer: FaviconAssetPathTransformer = identityFaviconAssetPathTransformer,
@@ -42,14 +42,17 @@ export const generateFaviconFiles = async (
   Object.assign(
     {},
     await generateDesktopFaviconFiles(
+      masterIcon,
       settings.icon.desktop,
       imageAdapter
     ),
     await generateTouchIconFiles(
+      masterIcon,
       settings.icon.touch,
       imageAdapter
     ),
     await generateWebAppManifestIconFiles(
+      masterIcon,
       settings.icon.webAppManifest,
       settings.path,
       imageAdapter,

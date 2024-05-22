@@ -1,5 +1,5 @@
 import { FaviconAssetPathTransformer, FaviconFiles, FaviconMarkups, identityFaviconAssetPathTransformer } from ".";
-import { transformSvg } from "../icon/helper";
+import { MasterIcon, transformSvg } from "../icon/helper";
 import { createDesktopSvgIcon } from "../svg/desktop";
 import { imagesToIco } from "../icon/ico";
 import { DesktopIconSettings } from "../icon/desktop";
@@ -40,16 +40,16 @@ export const generateDesktopFaviconHtml = (faviconPath: string, transformer: Fav
   };
 }
 
-export const generateDesktopFaviconFiles = async (settings: DesktopIconSettings, imageAdapter: ImageAdapter): Promise<FaviconFiles> => {
+export const generateDesktopFaviconFiles = async (masterIcon: MasterIcon, settings: DesktopIconSettings, imageAdapter: ImageAdapter): Promise<FaviconFiles> => {
   const transformedRegularSvg = transformSvg(
-    settings.regularIcon, settings.regularIconTransformation, imageAdapter, 128
+    masterIcon.icon, settings.regularIconTransformation, imageAdapter, 128
   );
 
   const regularIcon = await imageAdapter.convertSvgToPng(
     scaleSvg(transformedRegularSvg, PngFaviconFileSize, imageAdapter)
   );
 
-  const theSvg = createDesktopSvgIcon(settings, imageAdapter);
+  const theSvg = createDesktopSvgIcon(masterIcon, settings, imageAdapter);
 
   const pics = await Promise.all(IcoFaviconSizes.map(async size => {
     const data = await imageAdapter.getImageData(convertSvgToDataUrl(theSvg), size);

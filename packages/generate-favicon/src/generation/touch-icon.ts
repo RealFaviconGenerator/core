@@ -1,5 +1,5 @@
 import { FaviconAssetPathTransformer, FaviconFiles, FaviconMarkups, identityFaviconAssetPathTransformer } from ".";
-import { transformSvg } from "../icon/helper";
+import { MasterIcon, transformSvg } from "../icon/helper";
 import { TouchIconSettings } from "../icon/ios";
 import { scaleSvg } from "../svg";
 import { ImageAdapter } from "../svg/adapter";
@@ -23,9 +23,9 @@ export const generateTouchIconHtml = (faviconPath: string, appTitle: string | nu
   return { markups, cssSelectors };
 }
 
-export const generateTouchIconFiles = async (settings: TouchIconSettings, imageAdapeter: ImageAdapter): Promise<FaviconFiles> => {
+export const generateTouchIconFiles = async (masterIcon: MasterIcon, settings: TouchIconSettings, imageAdapeter: ImageAdapter): Promise<FaviconFiles> => {
   const transformedIcon = transformSvg(
-    settings.icon, settings.transformation, imageAdapeter, TouchIconPngSize
+    masterIcon.icon, settings.transformation, imageAdapeter, TouchIconPngSize
   );
 
   const touchIcon = await imageAdapeter.convertSvgToPng(

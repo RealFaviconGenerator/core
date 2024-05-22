@@ -33,6 +33,10 @@ export {
 } from './generation/web-app-manifest';
 
 export {
+  MasterIcon
+} from './icon/helper';
+
+export {
   FaviconIconSettings, FaviconSettings, initFaviconIconSettings, generateFaviconFiles, generateFaviconHtml
 } from './icon/index';
 
