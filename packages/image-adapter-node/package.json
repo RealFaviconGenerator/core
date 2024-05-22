@@ -1,6 +1,6 @@
 {
   "name": "@realfavicongenerator/image-adapter-node",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "description": "Image adapter for Node",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -31,7 +31,7 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
-    "@realfavicongenerator/generate-favicon": "^0.2.7",
+    "@realfavicongenerator/generate-favicon": "^0.3.0",
     "@svgdotjs/svg.js": "^3.2.0",
     "sharp": "^0.32.6",
     "svgdom": "^0.1.19"
