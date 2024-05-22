@@ -28,8 +28,10 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-typescript": "^11.1.6",
+    "@types/fancy-log": "^2.0.2",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.12",
+    "@types/through2": "^2.0.41",
     "rollup": "^4.13.2",
     "ts-jest": "^29.1.2",
     "typescript": "^5.4.3"
@@ -39,6 +41,8 @@
     "@realfavicongenerator/image-adapter-node": "^0.2.7",
     "@realfavicongenerator/inject-markups": "^0.2.9",
     "@rollup/plugin-json": "^6.1.0",
-    "plugin-error": "^2.0.1"
+    "fancy-log": "^2.0.0",
+    "plugin-error": "^2.0.1",
+    "through2": "^4.0.2"
   }
 }

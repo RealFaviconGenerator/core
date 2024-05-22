@@ -20,39 +20,33 @@ var FAVICON_DATA_FILE = 'faviconData.json';
 // package (see the check-for-favicon-update task below).
 gulp.task('generate-favicon', function(done) {
 	realFavicon.generateFavicon({
-		masterPicture: 'sample_picture_1.png',
+		masterIcon: 'sample_picture_1.png',
 		dest: 'images/',
-		iconsPath: '/',
-		design: {
-			ios: {
-				pictureAspect: 'backgroundAndMargin',
-				backgroundColor: '#ffffff',
-				margin: '14%'
-			},
-			desktopBrowser: {},
-			windows: {
-				pictureAspect: 'noChange',
-				backgroundColor: '#da532c',
-				onConflict: 'override'
-			},
-			androidChrome: {
-				pictureAspect: 'shadow',
-				themeColor: '#ffffff',
-				manifest: {
-					name: 'The app',
-					display: 'browser',
-					orientation: 'notSet',
-					onConflict: 'override'
-				}
-			},
-			safariPinnedTab: {
-				pictureAspect: 'silhouette',
-				themeColor: '#5bbad5'
-			}
-		},
 		settings: {
-			scalingAlgorithm: 'Mitchell',
-			errorOnImageTooSmall: false
+			icon: {
+				desktop: {
+					regularIconTransformation: {
+						type: "none"
+					},
+					darkIconType: "none"
+				},
+				touch: {
+					transformation: {
+						type: "none"
+					},
+					appTitle: null
+				},
+				webAppManifest: {
+					transformation: {
+						type: "none"
+					},
+					backgroundColor: "#ffffff",
+					name: "Example",
+					shortName: "Ex",
+					themeColor: "#ffffff"
+				}	
+			},
+			path: '/'
 		},
 		markupFile: FAVICON_DATA_FILE
 	}, function() {
@@ -64,8 +58,8 @@ gulp.task('generate-favicon', function(done) {
 // this task whenever you modify a page. You can keep this task
 // as is or refactor your existing HTML pipeline.
 gulp.task('inject-favicon-markups', function() {
-	gulp.src([ 'index.html' ])
-		.pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(FAVICON_DATA_FILE)).favicon.html_code))
+	return gulp.src([ 'index.html' ])
+		.pipe(realFavicon.injectFaviconMarkups(JSON.parse(fs.readFileSync(FAVICON_DATA_FILE))))
 		.pipe(gulp.dest('out'));
 });
 
@@ -79,5 +73,6 @@ gulp.task('check-for-favicon-update', function(done) {
 		if (err) {
 			throw err;
 		}
+		done();
 	});
 });
