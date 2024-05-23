@@ -44,7 +44,7 @@ gulp.task('generate-favicon', function(done) {
 					name: "Example",
 					shortName: "Ex",
 					themeColor: "#ffffff"
-				}	
+				}
 			},
 			path: '/'
 		},
