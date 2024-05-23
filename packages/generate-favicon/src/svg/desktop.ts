@@ -28,7 +28,7 @@ export const createDesktopSvgIcon = (
   const lightIcon = transformSvg(masterIcon.icon, settings.regularIconTransformation, imageAdapter);
 
   // No dark icon? Done!
-  if (hasDarkIcon(settings)) {
+  if (!hasDarkIcon(settings)) {
     return lightIcon;
   }
 
