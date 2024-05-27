@@ -1,4 +1,4 @@
-# RealFavicon CLI
+# RealFavicon Node CLI
 
 Create and check favicon with [RealFaviconGenerator](https://realfavicongenerator.net/) from the command line.
 
@@ -18,5 +18,5 @@ npx realfavicon check 3000
 
 ## Generate favicon
 
-Use the [command line favicon generation](http://localhost:3000/favicon/command-line)
+Use the [Node command line favicon generation](https://realfavicongenerator.net/favicon/node_cli)
 of RealFaviconGenerator and follow the instructions.
