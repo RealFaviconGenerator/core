@@ -1,4 +1,4 @@
-# check-favicon
+# @realfavicongenerator/check-favicon
 
 A TypeSCript library to check the favicon of a website. This library is used by the
 [favicon checker](https://realfavicongenerator.net/favicon_checker) of
