@@ -20,8 +20,8 @@ program.command('check')
   .argument('<URL or port>', 'URL to check, or simply a port to target localhost')
   .option('-s, --screen <screen>', 'Screen where the report is displayed, can be cli or realfavicon', 'realfavicon')
   .addHelpText('after', CheckExamples)
-  .action(async (urlOrPort: string, screen: string) => {
-    await check(urlOrPort, stringToScreen(screen));
+  .action(async (urlOrPort: string, options: any) => {
+    await check(urlOrPort, stringToScreen(options.screen));
   });
 
 program.command('generate').
