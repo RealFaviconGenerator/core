@@ -29,8 +29,6 @@ const toBuffer = async (data: string | Buffer | Blob): Promise<Buffer> => {
 }
 
 export const generateFavicon = async (task: grunt.task.IMultiTask<any>) => {
-  console.log("Start...");
-
   const options: any = task.options({});
 
   const imageAdapter = await getNodeImageAdapter();
