@@ -40,6 +40,7 @@ export const generateFavicon = async (task: grunt.task.IMultiTask<any>) => {
   grunt.file.mkdir(task.data.dest);
 
   const settings: FaviconSettings = options.settings;
+  settings.path ||= '/';
 
   // Generate files
   const files = await generateFaviconFiles(masterIcon, settings, imageAdapter);
