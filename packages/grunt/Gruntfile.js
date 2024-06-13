@@ -18,7 +18,7 @@ module.exports = function(grunt) {
     },
 
     // Configuration to be run (and then tested).
-    real_favicon: {
+    realFavicon: {
       options: {
         settings: {
           // For scenario 1
@@ -172,7 +172,7 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'copy', 'real_favicon', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'copy', 'realFavicon', 'nodeunit']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['test']);

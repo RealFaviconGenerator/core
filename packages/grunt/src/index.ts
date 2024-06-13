@@ -12,7 +12,7 @@
 import { generateFavicon } from "./generate-favicon";
 
 module.exports = function(grunt: IGrunt) {
-  grunt.registerMultiTask('real_favicon', 'You favicon with RealFaviconGenerator and Grunt', function() {
+  grunt.registerMultiTask('realFavicon', 'Your favicon with RealFaviconGenerator and Grunt', function() {
     const done = this.async();
     generateFavicon(this).then(() => done());
   });
