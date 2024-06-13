@@ -33,7 +33,7 @@ export {
 } from './generation/web-app-manifest';
 
 export {
-  MasterIcon
+  MasterIcon, IconTransformationType
 } from './icon/helper';
 
 export {
