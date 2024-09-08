@@ -1,6 +1,6 @@
 {
   "name": "@realfavicongenerator/check-favicon",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "description": "Check the favicon of a website",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
