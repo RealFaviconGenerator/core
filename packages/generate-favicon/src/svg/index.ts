@@ -38,8 +38,8 @@ export const blobToDataUrl = (blob: Blob): Promise<string> => {
   });
 }
 
-export const bitmapToSvg = async (binaryData: ArrayBuffer, imageAdapter: ImageAdapter): Promise<Svg> => {
-  const blob = new Blob([ binaryData ]);
+export const bitmapToSvg = async (binaryData: ArrayBuffer, mimeType: string, imageAdapter: ImageAdapter): Promise<Svg> => {
+  const blob = new Blob([ binaryData ], { type: mimeType });
   const url = await blobToDataUrl(blob);
 
   return dataUrlToSvg(url, imageAdapter);
