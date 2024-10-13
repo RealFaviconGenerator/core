@@ -1,4 +1,9 @@
-import { initTransformation, IconTransformationType, innerImageTransform, userBrightnessToCssFilter, isLightColor } from './helper';
+import { initTransformation, IconTransformationType, innerImageTransform, userBrightnessToCssFilter, isLightColor, numberAliasToNumber } from './helper';
+
+test('numberAliasToNumber', () => {
+  expect(numberAliasToNumber(65)).toEqual(65);
+  expect(numberAliasToNumber('121px')).toEqual(121);
+});
 
 test('innerImageTransform', () => {
   expect(innerImageTransform(
@@ -8,6 +13,21 @@ test('innerImageTransform', () => {
     translateY: 30,
     scaleX: 2,
     scaleY: 2,
+    originX: 20,
+    originY: 20,
+  });
+
+  // For https://github.com/RealFaviconGenerator/realfavicongenerator/issues/506,
+  // also this is not a verification test strictly speaking
+  expect(innerImageTransform(
+    121, 121, 20, 1.0
+  )).toEqual({
+    translateX: -50.5,
+    translateY: -50.5,
+    scaleX: 0.1652892561983471,
+    scaleY: 0.1652892561983471,
+    originX: 60.5,
+    originY: 60.5,
   });
 });
 

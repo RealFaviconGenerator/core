@@ -69,7 +69,12 @@ export const initTransformation = (type: IconTransformationType, parameters: Ico
     scaleX: scaleFactor,
     scaleY: scaleFactor,
     translateX: (imgSize - iiWidth) / 2,
-    translateY: (imgSize - iiHeight) / 2
+    translateY: (imgSize - iiHeight) / 2,
+    // Set origin to prevent SVG.js from computing it itself
+    // When it does so, it uses the bbox and not the actual image size
+    // See https://github.com/RealFaviconGenerator/realfavicongenerator/issues/506
+		originX: iiWidth / 2,
+		originY: iiHeight / 2,
   };
 };
 
