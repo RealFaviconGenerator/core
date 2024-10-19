@@ -8,7 +8,7 @@ This module is used by the [favicon generator](https://realfavicongenerator.net/
 ## Guided setup
 
 Use RealFaviconGenerator to generate and setup your code in your project.
-Simply visit the [favicon generator for Node](https://next.realfavicongenerator.net/favicon/node)
+Simply visit the [favicon generator for Node](https://realfavicongenerator.net/favicon/node)
 and follow the instructions.
 
 ## Manual setup

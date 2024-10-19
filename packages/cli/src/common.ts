@@ -1,2 +1,2 @@
 
-export const RealFaviconGeneratorBaseUrl = 'https://next.realfavicongenerator.net/';
+export const RealFaviconGeneratorBaseUrl = 'https://realfavicongenerator.net/';
