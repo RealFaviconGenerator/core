@@ -88,24 +88,6 @@ test('checkTouchIcon - noTouchIcon', async () => {
   }]});
 })
 
-test('checkTouchIcon - touchIconWithSize', async () => {
-  await runCheckTouchIconTest(`
-    <link rel="apple-touch-icon" sizes="152x152" href="some-other-icon.png">
-  `, { messages: [{
-    status: CheckerStatus.Ok,
-    id: MessageId.touchIconDeclared,
-  }, {
-    status: CheckerStatus.Warning,
-    id: MessageId.touchIconWithSize,
-  }]}, {
-    'https://example.com/some-other-icon.png': {
-      status: 200,
-      contentType: 'image/png',
-      readableStream: null
-    }
-  });
-})
-
 test('checkTouchIcon - multipleTouchIcon - no size', async () => {
   await runCheckTouchIconTest(`
     <link rel="apple-touch-icon" href="some-icon.png">
@@ -138,9 +120,6 @@ test('checkTouchIcon - multipleTouchIcon - specific size', async () => {
     status: CheckerStatus.Ok,
     id: MessageId.touchIconDeclared,
   }, {
-    status: CheckerStatus.Warning,
-    id: MessageId.touchIconWithSize,
-  }, {
     status: CheckerStatus.Error,
     id: MessageId.duplicatedTouchIconSizes,
   }]}, {
@@ -149,24 +128,6 @@ test('checkTouchIcon - multipleTouchIcon - specific size', async () => {
       contentType: 'image/png',
       readableStream: null
     },
-    'https://example.com/some-other-icon.png': {
-      status: 200,
-      contentType: 'image/png',
-      readableStream: null
-    }
-  });
-})
-
-test('checkTouchIcon - touchIconWithSize', async () => {
-  await runCheckTouchIconTest(`
-    <link rel="apple-touch-icon" sizes="180x180" href="some-other-icon.png">
-  `, { messages: [{
-    status: CheckerStatus.Ok,
-    id: MessageId.touchIconDeclared,
-  }, {
-    status: CheckerStatus.Warning,
-    id: MessageId.touchIconWithSize,
-  }]}, {
     'https://example.com/some-other-icon.png': {
       status: 200,
       contentType: 'image/png',

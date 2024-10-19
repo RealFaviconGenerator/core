@@ -88,15 +88,6 @@ export const checkTouchIconIcon = async (baseUrl: string, head: HTMLElement | nu
     text: 'The touch icon is declared'
   });
 
-  const sizes = iconMarkup.map(icon => icon.getAttribute('sizes')).filter(size => size);
-  if (sizes.length > 0) {
-    messages.push({
-      status: CheckerStatus.Warning,
-      id: MessageId.touchIconWithSize,
-      text: `Some Touch icon have a specific size (${sizes.join(', ')})`
-    });
-  }
-
   const duplicatedSizes = getDuplicatedSizes(iconMarkup.map(icon => icon.getAttribute('sizes')));
   if (duplicatedSizes.length > 0) {
     messages.push({
