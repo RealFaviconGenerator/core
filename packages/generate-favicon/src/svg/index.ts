@@ -1,9 +1,13 @@
 import { SVG, Svg } from "@svgdotjs/svg.js";
 import { ImageAdapter } from "./adapter";
 import { numberAliasToNumber } from "../icon/helper";
+import { filterDoctypeOut } from "./helper";
 
 export const stringToSvg = (svg: string, imageAdapeter: ImageAdapter): Svg => {
-  const s = imageAdapeter.createSvg().svg(svg);
+  // We use filterDoctypeOut because of
+  // https://github.com/RealFaviconGenerator/realfavicongenerator/issues/507
+  // and https://github.com/svgdotjs/svgdom/issues/130
+  const s = imageAdapeter.createSvg().svg(filterDoctypeOut(svg));
 
   const subSvg: any = s.find('svg')[0];
   if (subSvg) {
