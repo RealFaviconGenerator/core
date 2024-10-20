@@ -1,0 +1,28 @@
+{
+  "name": "sandbox",
+  "version": "0.4.3",
+  "description": "Just a playground project to run @realfavicongenerator code locally",
+  "main": "index.ts",
+  "bin": "./dist/index.js",
+  "type": "module",
+  "scripts": {
+    "sandbox": "tsx index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Philippe Bernard",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:RealFaviconGenerator/core.git"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.1"
+  },
+  "dependencies": {
+    "@realfavicongenerator/check-favicon": "^0.4.3",
+    "@realfavicongenerator/generate-favicon": "^0.4.3",
+    "@realfavicongenerator/image-adapter-node": "^0.4.3",
+    "@realfavicongenerator/inject-markups": "^0.4.0",
+    "@svgdotjs/svg.js": "^3.2.4"
+  }
+}
