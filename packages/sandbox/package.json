@@ -5,6 +5,7 @@
   "main": "index.ts",
   "bin": "./dist/index.js",
   "type": "module",
+  "private": true,
   "scripts": {
     "sandbox": "tsx index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
