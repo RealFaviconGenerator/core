@@ -137,8 +137,8 @@ export const checkPngFavicon = async (baseUrl: string, head: HTMLElement | null,
         id: MessageId.desktopPngFaviconDeclared,
         text: `The ${size} desktop PNG favicon is declared`
       });
-  
-      const href = icons[0].attributes.href;
+
+      const href = sizedIconMarkup[0].attributes.href;
       if (!href) {
         messages.push({
           status: CheckerStatus.Error,

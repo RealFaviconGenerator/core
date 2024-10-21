@@ -1,12 +1,12 @@
 import { parse } from 'node-html-parser'
-import { checkSvgFavicon } from "./desktop";
+import { checkPngFavicon, checkSvgFavicon } from "./desktop";
 import { CheckerMessage, CheckerStatus, FetchResponse, MessageId } from '../types';
 import { filePathToReadableStream, filePathToString, stringToReadableStream } from '../helper';
 import { testFetcher } from '../test-helper';
 
 type TestOutput = Pick<CheckerMessage, 'id' | 'status'>[];
 
-const runTest = async (
+const runSvgTest = async (
   headFragment: string | null,
   output: TestOutput,
   fetchDatabase: { [url: string]: FetchResponse } = {}
@@ -18,21 +18,21 @@ const runTest = async (
 }
 
 test('checkSvgFavicon - noHead', async () => {
-  await runTest(null, [{
+  await runSvgTest(null, [{
     status: CheckerStatus.Error,
     id: MessageId.noHead,
   }]);
 })
 
 test('checkSvgFavicon - noSvgFavicon', async () => {
-  await runTest(`<title>SOme text</title>`, [{
+  await runSvgTest(`<title>SOme text</title>`, [{
     status: CheckerStatus.Error,
     id: MessageId.noSvgFavicon,
   }]);
 })
 
 test('checkSvgFavicon - multipleSvgFavicons', async () => {
-  await runTest(`
+  await runSvgTest(`
   <link rel="icon" type="image/svg+xml" href="/the-icon.svg" />
   <link rel="icon" type="image/svg+xml" href="/another-icon.svg" />
   `, [{
@@ -42,7 +42,7 @@ test('checkSvgFavicon - multipleSvgFavicons', async () => {
 })
 
 test('checkSvgFavicon - svgFaviconDeclared & noSvgFaviconHref', async () => {
-  await runTest(`<link rel="icon" type="image/svg+xml" />`, [{
+  await runSvgTest(`<link rel="icon" type="image/svg+xml" />`, [{
     status: CheckerStatus.Ok,
     id: MessageId.svgFaviconDeclared,
   }, {
@@ -52,7 +52,7 @@ test('checkSvgFavicon - svgFaviconDeclared & noSvgFaviconHref', async () => {
 })
 
 test('checkSvgFavicon - svgFaviconDeclared & svgFavicon404', async () => {
-  await runTest(`<link rel="icon" type="image/svg+xml" href="/the-icon.svg" />`, [{
+  await runSvgTest(`<link rel="icon" type="image/svg+xml" href="/the-icon.svg" />`, [{
     status: CheckerStatus.Ok,
     id: MessageId.svgFaviconDeclared,
   }, {
@@ -62,7 +62,7 @@ test('checkSvgFavicon - svgFaviconDeclared & svgFavicon404', async () => {
 })
 
 test('checkSvgFavicon - svgFaviconDeclared & svgFaviconCannotGet', async () => {
-  await runTest(`<link rel="icon" type="image/svg+xml" href="/the-icon.svg" />`, [{
+  await runSvgTest(`<link rel="icon" type="image/svg+xml" href="/the-icon.svg" />`, [{
     status: CheckerStatus.Ok,
     id: MessageId.svgFaviconDeclared,
   }, {
@@ -81,7 +81,7 @@ test('checkSvgFavicon - svgFaviconDeclared & svgFaviconDownloadable & svgFavicon
 
   const serpIcon = await filePathToString(testIconPath);
 
-  await runTest(`<link rel="icon" type="image/svg+xml" href="/the-icon.svg" />`, [
+  await runSvgTest(`<link rel="icon" type="image/svg+xml" href="/the-icon.svg" />`, [
     {
       status: CheckerStatus.Ok,
       id: MessageId.svgFaviconDeclared,
@@ -96,6 +96,55 @@ test('checkSvgFavicon - svgFaviconDeclared & svgFaviconDownloadable & svgFavicon
       status: 200,
       contentType: 'image/svg+xml',
       readableStream: await filePathToReadableStream(testIconPath)
+    }
+  });
+})
+
+const runPngTest = async (
+  headFragment: string | null,
+  output: TestOutput,
+  fetchDatabase: { [url: string]: FetchResponse } = {}
+) => {
+  const root = headFragment ? parse(headFragment) : null;
+  const result = await checkPngFavicon('https://example.com/', root, testFetcher(fetchDatabase));
+  const filteredMessages = result.messages.map(m => ({ status: m.status, id: m.id }));
+  expect(filteredMessages).toEqual(output);
+}
+
+const testIcon16 = './fixtures/16x16.png';
+const testIcon32 = './fixtures/32x32.png';
+const testIcon48 = './fixtures/48x48.png';
+
+test('checkSvgFavicon - Three PNG icons with different sizes', async () => {
+  await runPngTest(`
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon/favicon-48x48.png">
+  `, [{
+    status: CheckerStatus.Ok,
+    id: MessageId.desktopPngFaviconDeclared,
+  }, {
+    status: CheckerStatus.Ok,
+    id: MessageId.desktopPngFaviconDownloadable,
+  }, {
+    status: CheckerStatus.Ok,
+    id: MessageId.desktopPngFaviconRightSize,
+  }],
+  {
+    'https://example.com/favicon/favicon-16x16.png': {
+      status: 200,
+      contentType: 'image/png',
+      readableStream: await filePathToReadableStream(testIcon16),
+    },
+    'https://example.com/favicon/favicon-32x32.png': {
+      status: 200,
+      contentType: 'image/png',
+      readableStream: await filePathToReadableStream(testIcon32),
+    },
+    'https://example.com/favicon/favicon-48x48.png': {
+      status: 200,
+      contentType: 'image/png',
+      readableStream: await filePathToReadableStream(testIcon48),
     }
   });
 })
