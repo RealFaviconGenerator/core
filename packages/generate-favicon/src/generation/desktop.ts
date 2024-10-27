@@ -7,7 +7,7 @@ import { ImageAdapter } from "../svg/adapter";
 import { convertSvgToDataUrl } from "../helper";
 import { scaleSvg } from "../svg";
 
-export const PngFaviconFileSize = 48;
+export const PngFaviconFileSize = 96;
 
 // Order matters: when given in asc order (16, 32, 48), the icon is corrupted when opend in Chrome.
 export const IcoFaviconSizes = [ 48, 32, 16 ];
@@ -28,7 +28,7 @@ function blobToBuffer(blob: Blob): Promise<Buffer> {
 export const generateDesktopFaviconHtml = (faviconPath: string, transformer: FaviconAssetPathTransformer = identityFaviconAssetPathTransformer): FaviconMarkups => {
   return {
     markups: [
-      `<link rel="icon" type="image/png" href="${transformer(`${faviconPath}${PngFaviconFileName}`, true, false)}" sizes="48x48" />`,
+      `<link rel="icon" type="image/png" href="${transformer(`${faviconPath}${PngFaviconFileName}`, true, false)}" sizes="${PngFaviconFileSize}x${PngFaviconFileSize}" />`,
       `<link rel="icon" type="image/svg+xml" href="${transformer(`${faviconPath}${SvgFaviconFileName}`, true, false)}" />`,
       `<link rel="shortcut icon" href="${transformer(`${faviconPath}${IcoFaviconFileName}`, true, false)}" />`
     ],
