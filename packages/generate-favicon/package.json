@@ -1,6 +1,6 @@
 {
   "name": "@realfavicongenerator/generate-favicon",
-  "version": "0.4.4",
+  "version": "0.4.6",
   "description": "Generate a favicon",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
