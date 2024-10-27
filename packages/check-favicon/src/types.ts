@@ -30,7 +30,7 @@ export enum MessageId {
   icoFaviconExpectedSizes,
 
   noDesktopPngFavicon,
-  no48x48DesktopPngFavicon,
+  no96x96DesktopPngFavicon,
   desktopPngFaviconDeclared,
   noDesktopPngFaviconHref,
   desktopPngFaviconCannotGet,

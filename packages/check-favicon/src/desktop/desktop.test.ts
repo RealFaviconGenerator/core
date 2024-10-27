@@ -114,12 +114,14 @@ const runPngTest = async (
 const testIcon16 = './fixtures/16x16.png';
 const testIcon32 = './fixtures/32x32.png';
 const testIcon48 = './fixtures/48x48.png';
+const testIcon96 = './fixtures/96x96.png';
 
 test('checkSvgFavicon - Three PNG icons with different sizes', async () => {
   await runPngTest(`
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png">
   `, [{
     status: CheckerStatus.Ok,
     id: MessageId.desktopPngFaviconDeclared,
@@ -145,6 +147,11 @@ test('checkSvgFavicon - Three PNG icons with different sizes', async () => {
       status: 200,
       contentType: 'image/png',
       readableStream: await filePathToReadableStream(testIcon48),
+    },
+    'https://example.com/favicon/favicon-96x96.png': {
+      status: 200,
+      contentType: 'image/png',
+      readableStream: await filePathToReadableStream(testIcon96),
     }
   });
 })

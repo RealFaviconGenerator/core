@@ -4,7 +4,7 @@ import sharp from 'sharp'
 import { CheckIconProcessor, checkIcon, fetchFetcher, mergeUrlAndPath, readableStreamToString } from "../helper";
 import { checkIcoFavicon } from "./ico";
 
-export const PngFaviconFileSize = 48;
+export const PngFaviconFileSize = 96;
 
 export const checkSvgFavicon = async (baseUrl: string, head: HTMLElement | null, fetcher: Fetcher = fetchFetcher): Promise<CheckerMessage[]> => {
   const messages: CheckerMessage[] = [];
@@ -128,7 +128,7 @@ export const checkPngFavicon = async (baseUrl: string, head: HTMLElement | null,
     if (sizedIconMarkup.length === 0) {
       messages.push({
         status: CheckerStatus.Error,
-        id: MessageId.no48x48DesktopPngFavicon,
+        id: MessageId.no96x96DesktopPngFavicon,
         text: `There is no ${size} desktop PNG favicon`
       });
     } else {
