@@ -117,6 +117,11 @@ test('mergeUrlAndPath', () => {
   expect(mergeUrlAndPath('https://example.com/sub-page', 'some/path')).toBe('https://example.com/sub-page/some/path');
 
   expect(mergeUrlAndPath('https://example.com', 'https://elsewhere.com/some-path')).toBe('https://elsewhere.com/some-path');
+
+  // Protocol-relative URL
+  // For https://github.com/RealFaviconGenerator/core/issues/2
+  expect(mergeUrlAndPath('https://example.com', '//elsewhere.com/some-path')).toBe('https://elsewhere.com/some-path');
+  expect(mergeUrlAndPath('http://example.com', '//elsewhere.com/some-other/path')).toBe('http://elsewhere.com/some-other/path');
 })
 
 test('parseSizesAttribute', () => {

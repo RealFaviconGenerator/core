@@ -156,8 +156,11 @@ export const mergeUrlAndPath = (baseUrl: string, absoluteOrRelativePath: string)
 
   const url = new URL(baseUrl);
 
-  // If the path starts with a slash, replace the pathname
-  if (absoluteOrRelativePath.startsWith('/')) {
+  // Protocol-relative URL
+  if (absoluteOrRelativePath.startsWith('//')) {
+    return `${url.protocol}${absoluteOrRelativePath}`;
+  } else if (absoluteOrRelativePath.startsWith('/')) {
+    // If the path starts with a slash, replace the pathname
     return `${url.origin}${absoluteOrRelativePath}`;
   } else {
     // Otherwise, append the path to the existing pathname

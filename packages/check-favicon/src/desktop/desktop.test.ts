@@ -76,6 +76,22 @@ test('checkSvgFavicon - svgFaviconDeclared & svgFaviconCannotGet', async () => {
   });
 })
 
+// For https://github.com/RealFaviconGenerator/core/issues/2
+test('checkSvgFavicon - Protocol-relative URL', async () => {
+  await runSvgTest(`<link rel="icon" type="image/svg+xml" href="//example.com/the-icon.svg" />`, [{
+    status: CheckerStatus.Ok,
+    id: MessageId.svgFaviconDeclared,
+  }, {
+    status: CheckerStatus.Error,
+    id: MessageId.svgFaviconCannotGet,
+  }], {
+    'https://example.com/the-icon.svg': {
+      status: 403,
+      contentType: 'image/svg+xml'
+    }
+  });
+})
+
 test('checkSvgFavicon - svgFaviconDeclared & svgFaviconDownloadable & svgFaviconSquare', async () => {
   const testIconPath = './fixtures/happy-face.svg';
 
