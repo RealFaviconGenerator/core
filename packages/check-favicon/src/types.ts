@@ -79,7 +79,15 @@ export enum MessageId {
   manifestIconNotSquare,
   manifestIconRightSize,
   manifestIconSquare,
-  manifestIconWrongSize
+  manifestIconWrongSize,
+
+  googleNoRobotsFile,
+  googleIcoBlockedByRobots,
+  googleIcoAllowedByRobots,
+  googleSvgIconBlockedByRobots,
+  googleSvgIconAllowedByRobots,
+  googlePngIconBlockedByRobots,
+  googlePngIconAllowedByRobots,
 }
 
 export type CheckerMessage = {
@@ -96,9 +104,24 @@ export type FetchResponse = {
 
 export type Fetcher = (url: string, contentType?: string) => Promise<FetchResponse>;
 
+type CheckedIcon = {
+  content: string | null,
+  url: string | null,
+}
+
+export type DesktopSingleReport = {
+  messages: CheckerMessage[],
+  icon: CheckedIcon | null,
+}
+
 export type DesktopFaviconReport = {
   messages: CheckerMessage[],
   icon: string | null,
+  icons: {
+    png: CheckedIcon | null,
+    ico: CheckedIcon | null,
+    svg: CheckedIcon | null,
+  }
 }
 
 export type TouchIconTitleReport = {

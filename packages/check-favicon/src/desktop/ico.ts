@@ -1,11 +1,11 @@
-import { CheckerMessage, CheckerStatus, Fetcher, MessageId } from "../types";
+import { CheckerMessage, CheckerStatus, DesktopSingleReport, Fetcher, MessageId } from "../types";
 import { HTMLElement } from 'node-html-parser'
-import { mergeUrlAndPath, readableStreamToBuffer } from "../helper";
+import { bufferToDataUrl, mergeUrlAndPath, readableStreamToBuffer } from "../helper";
 import decodeIco from "decode-ico";
 
 export const IcoFaviconSizes = [ 48, 32, 16 ];
 
-export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fetcher: Fetcher): Promise<CheckerMessage[]> => {
+export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fetcher: Fetcher): Promise<DesktopSingleReport> => {
   const messages: CheckerMessage[] = [];
 
   if (!head) {
@@ -15,12 +15,18 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
       text: 'No <head> element'
     });
 
-    return messages;
+    return {
+      messages,
+      icon : { content: null, url: null }
+    };
   }
 
   const icos =
     head.querySelectorAll('link[rel="shortcut icon"]') ||
     head.querySelectorAll('link[rel="icon"][type="image/x-icon"]');
+
+  let iconUrl: string | null = null;
+  let images;
 
   if (icos.length === 0) {
     messages.push({
@@ -49,7 +55,7 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
         text: 'The ICO markup has no href attribute'
       });
     } else {
-      const iconUrl = mergeUrlAndPath(url, href);
+      iconUrl = mergeUrlAndPath(url, href);
       const iconResponse = await fetcher(iconUrl, 'image/x-icon');
       if (iconResponse.status === 404) {
         messages.push({
@@ -71,7 +77,7 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
         });
 
         const iconBuffer = await readableStreamToBuffer(iconResponse.readableStream);
-        const images = await decodeIco(iconBuffer);
+        images = await decodeIco(iconBuffer);
 
         const imageSizes = images.map(image => `${image.width}x${image.height}`);
 
@@ -106,5 +112,18 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
     }
   }
 
-  return messages;
+  let content: string | null = null;
+  if (images) {
+    const image = images[0];
+    const mimeType = (image.type === "bmp") ? "image/bmp" : "image/png";
+    content = await bufferToDataUrl(Buffer.from(image.data), mimeType);
+  }
+
+  return {
+    messages,
+    icon: {
+      content,
+      url: iconUrl
+    }
+  };
 }

@@ -1,6 +1,6 @@
 import { HTMLElement } from "node-html-parser";
 import { CheckerMessage, CheckerStatus, Fetcher, MessageId, WebAppManifestReport } from "./types";
-import { CheckIconProcessor, checkIcon, fetchFetcher, mergeUrlAndPath, pathToMimeType } from "./helper";
+import { CheckIconOutput, CheckIconProcessor, checkIcon, fetchFetcher, mergeUrlAndPath, pathToMimeType } from "./helper";
 
 export const checkWebAppManifest = async (baseUrl: string, head: HTMLElement | null, fetcher: Fetcher = fetchFetcher): Promise<WebAppManifestReport> => {
   const messages: CheckerMessage[] = [];
@@ -101,7 +101,7 @@ const readableStreamToJson = async (stream: ReadableStream): Promise<any> => {
 
 export const checkWebAppManifestFile = async (manifest: any, baseUrl: string, fetcher: Fetcher): Promise<WebAppManifestReport> => {
   const messages: CheckerMessage[] = [];
-  let icon = null;
+  let icon: CheckIconOutput | null = null;
 
   const name = manifest.name || undefined;
   if (!name) {
@@ -257,5 +257,5 @@ export const checkWebAppManifestFile = async (manifest: any, baseUrl: string, fe
     }
   }
 
-  return { messages, name, shortName, backgroundColor, themeColor, icon };
+  return { messages, name, shortName, backgroundColor, themeColor, icon: icon ? icon.content : null };
 }

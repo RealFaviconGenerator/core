@@ -1,5 +1,5 @@
 import sharp from "sharp";
-import { CheckIconProcessor, checkIcon, filePathToReadableStream, mergeUrlAndPath, parseSizesAttribute } from "./helper";
+import { CheckIconProcessor, bufferToDataUrl, checkIcon, filePathToDataUrl, filePathToReadableStream, filePathToString, mergeUrlAndPath, parseSizesAttribute } from "./helper";
 import { testFetcher } from "./test-helper";
 
 const getTestProcessor = () => {
@@ -30,7 +30,12 @@ test('checkIcon - noHref', async () => {
 
 test('checkIcon - icon404', async () => {
   const processor = getTestProcessor();
-  expect(await checkIcon('/does-not-exist.png', processor.processor, testFetcher({}), 'image/png')).toBeNull();
+  expect(await checkIcon('/does-not-exist.png', processor.processor, testFetcher({}), 'image/png')).toEqual({
+    content: null,
+    url: '/does-not-exist.png',
+    width: null,
+    height: null
+  });
   expect(processor.messages).toEqual(['icon404']);
 })
 
@@ -41,7 +46,12 @@ test('checkIcon - icon404', async () => {
       contentType: 'image/png',
       status: 500
     }
-  }), 'image/png')).toBeNull();
+  }), 'image/png')).toEqual({
+    content: null,
+    url: '/bad-icon.png',
+    width: null,
+    height: null
+  });
   expect(processor.messages).toEqual(['cannotGet 500']);
 })
 
@@ -100,7 +110,12 @@ test('checkIcon - downloadable & notSquare', async () => {
       contentType: 'image/png',
       readableStream: await filePathToReadableStream(nonSquareIcon)
     }
-  }), 'image/png', 500)).toBeNull();
+  }), 'image/png', 500)).toEqual({
+    content: await filePathToDataUrl(nonSquareIcon),
+    url: '/non-square-icon.png',
+    width: 240,
+    height: 180
+  });
   expect(processor.messages).toEqual([
     'downloadable',
     'notSquare 240x180'

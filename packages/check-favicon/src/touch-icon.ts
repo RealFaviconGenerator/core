@@ -1,6 +1,6 @@
 import { CheckerMessage, CheckerStatus, Fetcher, MessageId, TouchIconIconReport, TouchIconReport, TouchIconTitleReport } from "./types";
 import { HTMLElement } from 'node-html-parser'
-import { CheckIconProcessor, checkIcon, fetchFetcher, mergeUrlAndPath } from "./helper";
+import { CheckIconOutput, CheckIconProcessor, checkIcon, fetchFetcher, mergeUrlAndPath } from "./helper";
 
 export const checkTouchIconTitle = async (baseUrl: string, head: HTMLElement | null, fetcher: Fetcher = fetchFetcher): Promise<TouchIconTitleReport> => {
   const messages: CheckerMessage[] = [];
@@ -59,7 +59,7 @@ export const checkTouchIconTitle = async (baseUrl: string, head: HTMLElement | n
 
 export const checkTouchIconIcon = async (baseUrl: string, head: HTMLElement | null, fetcher: Fetcher = fetchFetcher): Promise<TouchIconIconReport> => {
   const messages: CheckerMessage[] = [];
-  let touchIcon: string | null = null;
+  let touchIcon: CheckIconOutput | null = null;
 
   if (!head) {
     messages.push({
@@ -176,7 +176,7 @@ export const checkTouchIconIcon = async (baseUrl: string, head: HTMLElement | nu
     undefined
   );
 
-  return { messages, touchIcon };
+  return { messages, touchIcon: touchIcon ? touchIcon.content : null };
 }
 
 export const getDuplicatedSizes = (sizes: (string | undefined)[]): (string | undefined)[] => {

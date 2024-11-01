@@ -100,13 +100,20 @@ export const pathToMimeType = (path: string): string => {
   }
 }
 
+export type CheckIconOutput = {
+  content: string | null,
+  url: string | null,
+  width: number | null,
+  height: number | null,
+}
+
 export const checkIcon = async (
   iconUrl: string | undefined,
   processor: CheckIconProcessor,
   fetcher: Fetcher,
   mimeType: string | undefined,
   expectedWidthHeight?: number
-): Promise<string | null> => {
+): Promise<CheckIconOutput | null> => {
   if (!iconUrl) {
     processor.noHref();
     return null;
@@ -120,15 +127,16 @@ export const checkIcon = async (
   } else if (res.readableStream) {
     processor.downloadable();
 
-    const content = await readableStreamToBuffer(res.readableStream);
-    const meta = await sharp(content).metadata();
+    const rawContent = await readableStreamToBuffer(res.readableStream);
+    const meta = await sharp(rawContent).metadata();
 
     const contentType = res.contentType || pathToMimeType(iconUrl);
+
+    const content = await bufferToDataUrl(rawContent, contentType);
 
     if (meta.width && meta.height) {
       if (meta.width !== meta.height) {
         processor.notSquare(meta.width, meta.height);
-        return null;
       } else {
         processor.square(meta.width);
 
@@ -142,10 +150,20 @@ export const checkIcon = async (
       }
     }
 
-    return bufferToDataUrl(content, contentType);
+    return {
+      content,
+      url: iconUrl,
+      width: meta.width || null,
+      height: meta.height || null
+    }
   }
 
-  return null;
+  return {
+    content: null,
+    url: iconUrl,
+    width: null,
+    height: null
+  };
 }
 
 export const mergeUrlAndPath = (baseUrl: string, absoluteOrRelativePath: string): string => {
@@ -187,6 +205,13 @@ export const parseSizesAttribute = (sizes: string | undefined | null): number | 
 
 export const bufferToDataUrl = (buffer: Buffer, mimeType: string): string => {
   return `data:${mimeType};base64,${buffer.toString('base64')}`;
+}
+
+export const filePathToDataUrl = async (filePath: string): Promise<string> => {
+  const readStream = await filePathToReadableStream(filePath);
+  const rawContent = await readableStreamToBuffer(readStream);
+  const contentType = pathToMimeType(filePath);
+  return bufferToDataUrl(rawContent, contentType);
 }
 
 export const fetchFetcher: Fetcher = async (url, contentType) => {

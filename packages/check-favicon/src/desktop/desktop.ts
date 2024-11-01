@@ -1,12 +1,12 @@
-import { CheckerMessage, CheckerStatus, DesktopFaviconReport, Fetcher, MessageId } from "../types";
+import { CheckerMessage, CheckerStatus, DesktopFaviconReport, DesktopSingleReport, Fetcher, MessageId } from "../types";
 import { HTMLElement } from 'node-html-parser'
 import sharp from 'sharp'
-import { CheckIconProcessor, checkIcon, fetchFetcher, mergeUrlAndPath, readableStreamToString } from "../helper";
+import { CheckIconProcessor, bufferToDataUrl, checkIcon, fetchFetcher, mergeUrlAndPath, readableStreamToString } from "../helper";
 import { checkIcoFavicon } from "./ico";
 
 export const PngFaviconFileSize = 96;
 
-export const checkSvgFavicon = async (baseUrl: string, head: HTMLElement | null, fetcher: Fetcher = fetchFetcher): Promise<CheckerMessage[]> => {
+export const checkSvgFavicon = async (baseUrl: string, head: HTMLElement | null, fetcher: Fetcher = fetchFetcher): Promise<DesktopSingleReport> => {
   const messages: CheckerMessage[] = [];
 
   if (!head) {
@@ -16,7 +16,10 @@ export const checkSvgFavicon = async (baseUrl: string, head: HTMLElement | null,
       text: 'No <head> element'
     });
 
-    return messages;
+    return {
+      messages,
+      icon: { content: null, url: null }
+    };
   }
 
   const svgs = head?.querySelectorAll("link[rel='icon'][type='image/svg+xml']");
@@ -47,20 +50,27 @@ export const checkSvgFavicon = async (baseUrl: string, head: HTMLElement | null,
         text: 'The SVG markup has no href attribute'
       });
     } else {
-      const iconMessages = await checkSvgFaviconFile(baseUrl, href, fetcher)
-      return [ ...messages, ...iconMessages ];
+      const iconReport = await checkSvgFaviconFile(baseUrl, href, fetcher)
+      return {
+        messages: [ ...messages, ...iconReport.messages ],
+        icon: iconReport.icon
+      };
     }
   }
 
-  return messages;
+  return {
+    messages,
+    icon: { content: null, url: null }
+  };
 }
 
-export const checkSvgFaviconFile = async (baseUrl: string, url: string, fetcher: Fetcher): Promise<CheckerMessage[]> => {
+export const checkSvgFaviconFile = async (baseUrl: string, url: string, fetcher: Fetcher): Promise<DesktopSingleReport> => {
   const messages: CheckerMessage[] = [];
 
   const svgUrl = mergeUrlAndPath(baseUrl, url);
 
   const res = await fetcher(svgUrl, 'image/svg+xml');
+  let content;
   if (res.status === 404) {
     messages.push({
       status: CheckerStatus.Error,
@@ -80,7 +90,7 @@ export const checkSvgFaviconFile = async (baseUrl: string, url: string, fetcher:
       text: `The SVG favicon is accessible at \`${url}\``
     });
 
-    const content = await readableStreamToString(res.readableStream);
+    content = await readableStreamToString(res.readableStream);
     const meta = await sharp(Buffer.from(content)).metadata();
 
     if (meta.width !== meta.height) {
@@ -98,10 +108,16 @@ export const checkSvgFaviconFile = async (baseUrl: string, url: string, fetcher:
     }
   }
 
-  return messages;
+  return {
+    messages,
+    icon: {
+      content: content ? await bufferToDataUrl(Buffer.from(content), 'image/svg+xml') : null,
+      url: svgUrl
+    }
+  };
 }
 
-export const checkPngFavicon = async (baseUrl: string, head: HTMLElement | null, fetcher: Fetcher = fetchFetcher): Promise<DesktopFaviconReport> => {
+export const checkPngFavicon = async (baseUrl: string, head: HTMLElement | null, fetcher: Fetcher = fetchFetcher): Promise<DesktopSingleReport> => {
   const messages: CheckerMessage[] = [];
 
   if (!head) {
@@ -111,7 +127,7 @@ export const checkPngFavicon = async (baseUrl: string, head: HTMLElement | null,
       text: 'No <head> element'
     });
 
-    return { messages, icon: null };
+    return { messages, icon: { content: null, url: null } };
   }
 
   const icons = head?.querySelectorAll("link[rel='icon'][type='image/png']");
@@ -193,15 +209,21 @@ export const checkPngFavicon = async (baseUrl: string, head: HTMLElement | null,
     }
   }
 
-  return { messages, icon: null };
+  return { messages, icon: { content: null, url: null } };
 }
 
 export const checkDesktopFavicon = async (baseUrl: string, head: HTMLElement | null, fetcher: Fetcher = fetchFetcher): Promise<DesktopFaviconReport> => {
-  const svgMessages = await checkSvgFavicon(baseUrl, head, fetcher);
+  const svgReport = await checkSvgFavicon(baseUrl, head, fetcher);
   const pngReport = await checkPngFavicon(baseUrl, head, fetcher);
   const icoReport = await checkIcoFavicon(baseUrl, head, fetcher);
+
   return {
-    messages: [ ...svgMessages, ...pngReport.messages, ...icoReport ],
-    icon: pngReport.icon
+    messages: [ ...svgReport.messages, ...pngReport.messages, ...icoReport.messages ],
+    icon: pngReport.icon ? pngReport.icon.content : null,
+    icons: {
+      png: pngReport.icon || null,
+      ico: icoReport.icon,
+      svg: svgReport.icon
+    }
   };
 }
