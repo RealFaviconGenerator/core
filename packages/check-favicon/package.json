@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "test": "jest src",
+    "test:watch": "jest src --watch",
     "build": "tsc",
     "prepublishOnly": "npm run build"
   },
