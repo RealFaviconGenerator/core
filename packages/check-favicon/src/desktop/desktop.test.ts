@@ -95,7 +95,9 @@ test('checkSvgFavicon - svgFaviconDeclared & svgFavicon404', async () => {
       ico: null,
       svg: {
         content: null,
-        url: 'https://example.com/the-icon.svg'
+        url: 'https://example.com/the-icon.svg',
+        width: null,
+        height: null,
       },
     }
   });
@@ -115,7 +117,9 @@ test('checkSvgFavicon - svgFaviconDeclared & svgFaviconCannotGet', async () => {
       ico: null,
       svg: {
         content: null,
-        url: 'https://example.com/the-icon.svg'
+        url: 'https://example.com/the-icon.svg',
+        width: null,
+        height: null,
       },
     }
   }, {
@@ -140,7 +144,9 @@ test('checkSvgFavicon - Protocol-relative URL', async () => {
       ico: null,
       svg: {
         content: null,
-        url: 'https://example.com/the-icon.svg'
+        url: 'https://example.com/the-icon.svg',
+        width: null,
+        height: null,
       },
     }
   }, {
@@ -173,7 +179,9 @@ test('checkSvgFavicon - svgFaviconDeclared & svgFaviconDownloadable & svgFavicon
         ico: null,
         svg: {
           content: await filePathToDataUrl(testIconPath),
-          url: 'https://example.com/the-icon.svg'
+          url: 'https://example.com/the-icon.svg',
+          width: 36,
+          height: 36,
         },
       }
     }, {
@@ -220,7 +228,9 @@ test('checkSvgFavicon - Three PNG icons with different sizes', async () => {
     icons: {
       png: {
         content: await filePathToDataUrl(testIcon96),
-        url: 'https://example.com/favicon/favicon-96x96.png'
+        url: 'https://example.com/favicon/favicon-96x96.png',
+        width: 96,
+        height: 96,
       },
       ico: null,
       svg: null,

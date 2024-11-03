@@ -37,6 +37,7 @@
   "dependencies": {
     "decode-ico": "^0.4.1",
     "node-html-parser": "^6.1.13",
+    "robots-parser": "^3.0.1",
     "sharp": "^0.32.6"
   }
 }

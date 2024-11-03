@@ -24,9 +24,12 @@ export const filePathToString = async (path: string): Promise<string> => (
 )
 
 export const stringToReadableStream = (str: string): ReadableStream => {
+  const encoder = new TextEncoder();
+  const uint8Array = encoder.encode(str);
+
   return new ReadableStream({
     start(controller) {
-      controller.enqueue(str);
+      controller.enqueue(uint8Array);
       controller.close();
     }
   });

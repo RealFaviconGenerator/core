@@ -1,4 +1,4 @@
-import { CheckerMessage, CheckerStatus, DesktopSingleReport, Fetcher, MessageId } from "../types";
+import { CheckedIcon, CheckerMessage, CheckerStatus, DesktopSingleReport, Fetcher, MessageId } from "../types";
 import { HTMLElement } from 'node-html-parser'
 import { bufferToDataUrl, mergeUrlAndPath, readableStreamToBuffer } from "../helper";
 import decodeIco from "decode-ico";
@@ -17,7 +17,7 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
 
     return {
       messages,
-      icon : { content: null, url: null }
+      icon : { content: null, url: null, width: null, height: null }
     };
   }
 
@@ -113,17 +113,22 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
   }
 
   let content: string | null = null;
+  const theIcon: CheckedIcon = {
+    content: null,
+    url: iconUrl,
+    width: null,
+    height: null
+  };
   if (images) {
     const image = images[0];
     const mimeType = (image.type === "bmp") ? "image/bmp" : "image/png";
-    content = await bufferToDataUrl(Buffer.from(image.data), mimeType);
+    theIcon.content = await bufferToDataUrl(Buffer.from(image.data), mimeType);
+    theIcon.width = image.width;
+    theIcon.height = image.height;
   }
 
   return {
     messages,
-    icon: {
-      content,
-      url: iconUrl
-    }
+    icon: theIcon,
   };
 }

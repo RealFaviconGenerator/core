@@ -82,6 +82,7 @@ export enum MessageId {
   manifestIconWrongSize,
 
   googleNoRobotsFile,
+  googleRobotsFileFound,
   googleIcoBlockedByRobots,
   googleIcoAllowedByRobots,
   googleSvgIconBlockedByRobots,
@@ -104,9 +105,11 @@ export type FetchResponse = {
 
 export type Fetcher = (url: string, contentType?: string) => Promise<FetchResponse>;
 
-type CheckedIcon = {
+export type CheckedIcon = {
   content: string | null,
   url: string | null,
+  width: number | null,
+  height: number | null
 }
 
 export type DesktopSingleReport = {
@@ -150,3 +153,9 @@ export type FaviconReport = {
 }
 
 export type TouchIconReport = TouchIconIconReport & TouchIconTitleReport;
+
+export type GoogleReport = {
+  messages: CheckerMessage[],
+  icon: string | null,
+  icons: CheckedIcon[]
+}

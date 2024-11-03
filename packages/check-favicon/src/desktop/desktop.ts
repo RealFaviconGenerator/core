@@ -18,7 +18,7 @@ export const checkSvgFavicon = async (baseUrl: string, head: HTMLElement | null,
 
     return {
       messages,
-      icon: { content: null, url: null }
+      icon: { content: null, url: null, width: null, height: null }
     };
   }
 
@@ -60,7 +60,7 @@ export const checkSvgFavicon = async (baseUrl: string, head: HTMLElement | null,
 
   return {
     messages,
-    icon: { content: null, url: null }
+    icon: { content: null, url: null, width: null, height: null }
   };
 }
 
@@ -71,6 +71,8 @@ export const checkSvgFaviconFile = async (baseUrl: string, url: string, fetcher:
 
   const res = await fetcher(svgUrl, 'image/svg+xml');
   let content;
+  let width: number | null = null;
+  let height: number | null = null;
   if (res.status === 404) {
     messages.push({
       status: CheckerStatus.Error,
@@ -92,18 +94,20 @@ export const checkSvgFaviconFile = async (baseUrl: string, url: string, fetcher:
 
     content = await readableStreamToString(res.readableStream);
     const meta = await sharp(Buffer.from(content)).metadata();
+    width = meta.width || null;
+    height = meta.height || null;
 
-    if (meta.width !== meta.height) {
+    if (width && height && width !== height) {
       messages.push({
         status: CheckerStatus.Error,
         id: MessageId.svgFaviconNotSquare,
-        text: `The SVG is not square (${meta.width}x${meta.height})`
+        text: `The SVG is not square (${width}x${height})`
       });
     } else {
       messages.push({
         status: CheckerStatus.Ok,
         id: MessageId.svgFaviconSquare,
-        text: `The SVG is square (${meta.width}x${meta.height})`
+        text: `The SVG is square (${width}x${height})`
       });
     }
   }
@@ -112,7 +116,8 @@ export const checkSvgFaviconFile = async (baseUrl: string, url: string, fetcher:
     messages,
     icon: {
       content: content ? await bufferToDataUrl(Buffer.from(content), 'image/svg+xml') : null,
-      url: svgUrl
+      url: svgUrl,
+      width, height
     }
   };
 }
@@ -127,7 +132,7 @@ export const checkPngFavicon = async (baseUrl: string, head: HTMLElement | null,
       text: 'No <head> element'
     });
 
-    return { messages, icon: { content: null, url: null } };
+    return { messages, icon: { content: null, url: null, width: null, height: null } };
   }
 
   const icons = head?.querySelectorAll("link[rel='icon'][type='image/png']");
@@ -209,7 +214,7 @@ export const checkPngFavicon = async (baseUrl: string, head: HTMLElement | null,
     }
   }
 
-  return { messages, icon: { content: null, url: null } };
+  return { messages, icon: { content: null, url: null, width: null, height: null } };
 }
 
 export const checkDesktopFavicon = async (baseUrl: string, head: HTMLElement | null, fetcher: Fetcher = fetchFetcher): Promise<DesktopFaviconReport> => {
@@ -221,7 +226,7 @@ export const checkDesktopFavicon = async (baseUrl: string, head: HTMLElement | n
     messages: [ ...svgReport.messages, ...pngReport.messages, ...icoReport.messages ],
     icon: pngReport.icon ? pngReport.icon.content : null,
     icons: {
-      png: pngReport.icon || null,
+      png: pngReport.icon,
       ico: icoReport.icon,
       svg: svgReport.icon
     }
