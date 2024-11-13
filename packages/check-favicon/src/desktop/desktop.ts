@@ -135,7 +135,7 @@ export const checkPngFavicon = async (baseUrl: string, head: HTMLElement | null,
     return { messages, icon: { content: null, url: null, width: null, height: null } };
   }
 
-  const icons = head?.querySelectorAll("link[rel='icon'][type='image/png']");
+  const icons = head?.querySelectorAll("link[rel~='icon'][type='image/png']");
   if (icons.length === 0) {
     messages.push({
       status: CheckerStatus.Error,
