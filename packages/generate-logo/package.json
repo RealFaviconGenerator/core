@@ -1,0 +1,39 @@
+{
+  "name": "@realfavicongenerator/generate-logo",
+  "version": "0.4.6",
+  "description": "Generate a logo",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:RealFaviconGenerator/core.git"
+  },
+  "keywords": [
+    "logo",
+    "realfavicongenerator",
+    "generate",
+    "generator",
+    "RFG"
+  ],
+  "author": "Philippe Bernard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RealFaviconGenerator/core/issues"
+  },
+  "homepage": "https://github.com/RealFaviconGenerator/core#readme",
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.30",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+  }
+}
