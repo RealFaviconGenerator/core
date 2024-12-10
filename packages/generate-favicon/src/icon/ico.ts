@@ -1,9 +1,20 @@
+
+// The following code is from png-to-ico
+// (https://github.com/steambap/png-to-ico/blob/main/index.js),
+// With minor modifications for TypeScript.
+
+// The reason why the code was copied/pasted instead of being imported is because
+// the original package has a dependency on Node, whereas the present
+// package can be used in a browser environment.
+
+// Thank you Weilin Shi, the author of png-to-ico!
+
 import { ImageAndMeta } from "../svg/adapter";
 
-export const imagesToIco = (images: ImageAndMeta[]): Buffer => {
+export const imagesToIco = (images: ImageAndMeta[]) => {
 	const header = getHeader(images.length);
 	const headerAndIconDir = [header];
-	const ImageAndMetaArr: Buffer[] = [];
+	const imageDataArr: Buffer[] = [];
 
 	let len = header.length;
 	let offset = header.length + 16 * images.length;
@@ -19,13 +30,14 @@ export const imagesToIco = (images: ImageAndMeta[]): Buffer => {
 
 		dir.writeUInt32LE(newSize, 8);
 		headerAndIconDir.push(dir);
-		ImageAndMetaArr.push(bmpInfoHeader, dib);
+		imageDataArr.push(bmpInfoHeader, dib);
 	});
 
-	return Buffer.concat(headerAndIconDir.concat(ImageAndMetaArr), len);
+	return Buffer.concat(headerAndIconDir.concat(imageDataArr), len);
 }
 
-function getHeader(numOfImages: number): Buffer {
+// https://en.wikipedia.org/wiki/ICO_(file_format)
+function getHeader(numOfImages: number) {
 	const buf = Buffer.alloc(6);
 
 	buf.writeUInt16LE(0, 0); // Reserved. Must always be 0.
@@ -38,8 +50,7 @@ function getHeader(numOfImages: number): Buffer {
 function getDir(img: ImageAndMeta, offset: number) {
 	const buf = Buffer.alloc(16);
 	const bitmap = img //.bitmap;
-//	const width = bitmap.width >= 256 ? 0 : bitmap.width;
-  const width = 48;
+	const width = bitmap.width >= 256 ? 0 : bitmap.width;
 	const height = width;
 	const bpp = 32;
 
@@ -55,24 +66,25 @@ function getDir(img: ImageAndMeta, offset: number) {
 	return buf;
 }
 
-function getBmpInfoHeader(img: ImageAndMeta) {
+// https://en.wikipedia.org/wiki/BMP_file_format
+function getBmpInfoHeader(img: ImageAndMeta): Buffer {
 	const buf = Buffer.alloc(40);
 	const bitmap = img; //.bitmap;
-	const width = img.width === 256 ? 0 : img.width;
+	const width = bitmap.width;
 	// https://en.wikipedia.org/wiki/ICO_(file_format)
 	// ...Even if the AND mask is not supplied,
 	// if the image is in Windows BMP format,
 	// the BMP header must still specify a doubled height.
-	const height = img.height === 256 ? 0 : img.height;
+	const height = width * 2;
 	const bpp = 32;
 
 	buf.writeUInt32LE(40, 0); // The size of this header (40 bytes)
 	buf.writeInt32LE(width, 4); // The bitmap width in pixels (signed integer)
-	buf.writeInt32LE(2 * height, 8); // The bitmap height in pixels (signed integer)
+	buf.writeInt32LE(height, 8); // The bitmap height in pixels (signed integer)
 	buf.writeUInt16LE(1, 12); // The number of color planes (must be 1)
 	buf.writeUInt16LE(bpp, 14); // The number of bits per pixel
 	buf.writeUInt32LE(0, 16); // The compression method being used.
-	buf.writeUInt32LE(40 + width * height, 20); // The image size.
+	buf.writeUInt32LE(0, 20); // The image size.
 	buf.writeInt32LE(0, 24); // The horizontal resolution of the image. (signed integer)
 	buf.writeInt32LE(0, 28); // The vertical resolution of the image. (signed integer)
 	buf.writeUInt32LE(0, 32); // The number of colors in the color palette, or 0 to default to 2n
