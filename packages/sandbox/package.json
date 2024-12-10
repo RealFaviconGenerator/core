@@ -1,6 +1,6 @@
 {
   "name": "sandbox",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "Just a playground project to run @realfavicongenerator code locally",
   "main": "index.ts",
   "bin": "./dist/index.js",
@@ -21,8 +21,8 @@
   },
   "dependencies": {
     "@realfavicongenerator/check-favicon": "^0.4.8",
-    "@realfavicongenerator/generate-favicon": "^0.4.6",
-    "@realfavicongenerator/image-adapter-node": "^0.4.6",
+    "@realfavicongenerator/generate-favicon": "^0.4.9",
+    "@realfavicongenerator/image-adapter-node": "^0.4.9",
     "@realfavicongenerator/inject-markups": "^0.4.0",
     "@svgdotjs/svg.js": "^3.2.4"
   }
