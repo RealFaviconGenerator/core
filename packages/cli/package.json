@@ -1,6 +1,6 @@
 {
   "name": "realfavicon",
-  "version": "0.4.9",
+  "version": "0.4.10",
   "description": "Check favicon with RealFaviconGenerator from the CLI",
   "main": "dist/index.js",
   "bin": "./dist/index.js",
