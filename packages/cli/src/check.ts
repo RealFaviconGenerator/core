@@ -13,6 +13,8 @@ const statusToIcon = (status: CheckerStatus): string => {
     case CheckerStatus.Ok:
       return '✅';
   }
+
+  return '❓';
 }
 
 const printMessages = (report: CheckerMessage[], indentation = 2) => {
