@@ -9,11 +9,12 @@ export {
 } from './svg/index';
 
 export {
-  DesktopIconSettings, initDesktopIconSettings
+  DesktopIconSettings, initDesktopIconSettings,
 } from './icon/desktop';
 
 export {
-  generateDesktopFaviconHtml, generateDesktopFaviconFiles
+  generateDesktopFaviconHtml, generateDesktopFaviconFiles,
+  PngFaviconFileName, SvgFaviconFileName, IcoFaviconFileName
 } from './generation/desktop';
 
 export {
@@ -21,7 +22,8 @@ export {
 } from './icon/ios';
 
 export {
-  generateTouchIconHtml, generateTouchIconFiles
+  generateTouchIconHtml, generateTouchIconFiles,
+  TouchIconFileName
 } from './generation/touch-icon';
 
 export {
@@ -29,7 +31,8 @@ export {
 } from './icon/web-app-manifest';
 
 export {
-  generateWebAppManifestHtml, generateWebAppManifestIconFiles
+  generateWebAppManifestHtml, generateWebAppManifestIconFiles,
+  SiteWebManifestFileName
 } from './generation/web-app-manifest';
 
 export {
