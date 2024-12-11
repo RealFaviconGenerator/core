@@ -1,6 +1,6 @@
 {
   "name": "@realfavicongenerator/grunt-real-favicon",
-  "version": "0.4.9",
+  "version": "0.4.12",
   "description": "Generate a multiplatform favicon with RealFaviconGenerator and Grunt",
   "main": "dist/index.js",
   "bin": "./dist/index.js",
@@ -37,8 +37,8 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
-    "@realfavicongenerator/generate-favicon": "^0.4.9",
-    "@realfavicongenerator/image-adapter-node": "^0.4.9",
+    "@realfavicongenerator/generate-favicon": "^0.4.12",
+    "@realfavicongenerator/image-adapter-node": "^0.4.12",
     "@realfavicongenerator/inject-markups": "^0.4.0",
     "@rollup/plugin-json": "^6.1.0",
     "@types/grunt": "^0.4.31"
