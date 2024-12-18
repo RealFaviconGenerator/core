@@ -1,12 +1,12 @@
 import opentype from 'opentype.js';
 import { BackgroundType, ContentType, LogoSettings } from './types';
 import { Svg } from '@svgdotjs/svg.js';
-import { getNodeImageAdapter } from '@realfavicongenerator/image-adapter-node';
+import { ImageAdapter } from '@realfavicongenerator/generate-favicon';
 
 const imageWidth = 200;
 const imageHeight = 200;
 
-export const generateLogo = async (logoSettings: LogoSettings): Promise<Svg> => {
+export const generateLogo = async (logoSettings: LogoSettings, adapter: ImageAdapter): Promise<Svg> => {
   const font = await opentype.load(logoSettings.content.fontUrl);
   const path = font.getPath(logoSettings.content.text, 0, 0, 20);
   const bbox = path.getBoundingBox();
@@ -22,7 +22,6 @@ export const generateLogo = async (logoSettings: LogoSettings): Promise<Svg> => 
   const centerX = -newRefX - bbox.x1 + (imageWidth - (textWidth * textScale)) / 2;
   const centerY = -newRefY - bbox.y1 + (imageHeight - (textHeight * textScale)) / 2;
 
-  const adapter = await getNodeImageAdapter();
   const svg = adapter.createSvg();
   svg.viewbox(0, 0, imageWidth, imageHeight);
 

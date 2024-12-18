@@ -1,6 +1,6 @@
 
 export {
-  LogoSettings
+  ContentType, BackgroundType, LogoSettings
 } from './types';
 
 export {
