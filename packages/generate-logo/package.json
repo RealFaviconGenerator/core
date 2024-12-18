@@ -1,6 +1,6 @@
 {
   "name": "@realfavicongenerator/generate-logo",
-  "version": "0.4.14",
+  "version": "0.4.15",
   "description": "Generate a logo",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
