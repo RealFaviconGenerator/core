@@ -56,8 +56,10 @@ export const generateLogo = async (logoSettings: LogoSettings, adapter: ImageAda
 
   const textGroup = centeredGroup.group()
     .svg(path.toSVG(2))
-    .fill(logoSettings.content.color)
+    .fill(logoSettings.content.fillColor)
     .scale(textScale)
+    .stroke(logoSettings.content.strokeColor || 'none')
+    .attr('stroke-width', logoSettings.content.strokeWidth || 0)
     .translate(centerX, centerY);
 
   return svg;

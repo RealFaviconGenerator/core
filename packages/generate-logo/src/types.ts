@@ -15,7 +15,9 @@ export type LogoSettings = {
     text: string;
     fontUrl: string;
     scale: number;
-    color: string;
+    fillColor: string;
+    strokeColor?: string;
+    strokeWidth?: number;
   };
   background: {
     type: BackgroundType;
