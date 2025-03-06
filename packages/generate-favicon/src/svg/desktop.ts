@@ -11,9 +11,15 @@ export const createDesktopSvgIcon = (
   // Special case for icons that only play with brightness or color inversion
   if (
     (
+      // This optimization is possible when there is only a single icon to work on
+      settings.darkIconType !== 'specific'
+    )
+    &&
+    (
       isCSSFilterTransformation(settings.regularIconTransformation.type) ||
       settings.regularIconTransformation.type === IconTransformationType.None
-    ) &&
+    )
+    &&
     (
       !hasDarkIcon(settings) ||
       isCSSFilterTransformation(settings.darkIconTransformation.type) ||
