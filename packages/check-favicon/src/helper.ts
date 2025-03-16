@@ -1,6 +1,6 @@
 import fs from 'fs/promises'
 import path from 'path';
-import { Fetcher } from './types';
+import { CheckerStatus, FaviconReport, Fetcher } from './types';
 import sharp, { FormatEnum } from 'sharp';
 
 export const filePathToReadableStream = async (path: string): Promise<ReadableStream> => {
@@ -230,4 +230,16 @@ export const fetchFetcher: Fetcher = async (url, contentType) => {
     contentType: res.headers.get('Content-Type') || null,
     readableStream: res.body
   }
+}
+
+export const reportHasErrors = (report: FaviconReport): boolean => {
+  return report.desktop.messages.some(message => message.status === CheckerStatus.Error) ||
+    report.touchIcon.messages.some(message => message.status === CheckerStatus.Error) ||
+    report.webAppManifest.messages.some(message => message.status === CheckerStatus.Error);
+}
+
+export const reportHasWarnings = (report: FaviconReport): boolean => {
+  return report.desktop.messages.some(message => message.status === CheckerStatus.Warning) ||
+    report.touchIcon.messages.some(message => message.status === CheckerStatus.Warning) ||
+    report.webAppManifest.messages.some(message => message.status === CheckerStatus.Warning);
 }

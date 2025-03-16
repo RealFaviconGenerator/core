@@ -1,4 +1,4 @@
-import { CheckerMessage, CheckerStatus, FaviconReport, checkFavicon } from "@realfavicongenerator/check-favicon";
+import { CheckerMessage, CheckerStatus, FaviconReport, checkFavicon, reportHasErrors, reportHasWarnings } from "@realfavicongenerator/check-favicon";
 import { parse } from 'node-html-parser'
 import { getUrl } from '@/helper'
 import open from 'open'
@@ -51,7 +51,7 @@ const printCliReport = (report: FaviconReport) => {
   printMessages(report.webAppManifest.messages);
 }
 
-export const check = async (urlOrPort: string, screen: Screen) => {
+export const check = async (urlOrPort: string, screen: Screen, warningAsErrors = false): Promise<number> => {
   const url = getUrl(urlOrPort);
   console.log(`Check favicon at ${url}`);
 
@@ -75,4 +75,12 @@ export const check = async (urlOrPort: string, screen: Screen) => {
       await open(reportUrl);
       break;
   }
+
+  if (reportHasErrors(report)) {
+    return 2;
+  } else if (warningAsErrors && reportHasWarnings(report)) {
+    return 1;
+  }
+
+  return 0;
 }

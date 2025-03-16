@@ -18,10 +18,12 @@ program
 program.command('check')
   .description('Check a favicon')
   .argument('<URL or port>', 'URL to check, or simply a port to target localhost')
-  .option('-s, --screen <screen>', 'Screen where the report is displayed, can be cli or realfavicon', 'realfavicon')
+  .option('-s, --screen <screen>', 'Screen where the report is displayed, can be cli or realfavicon (ie. the browser)', 'realfavicon')
+  .option('-w, --warningsAsErrors', 'Return a non-zero exit code if there are warnings')
   .addHelpText('after', CheckExamples)
   .action(async (urlOrPort: string, options: any) => {
-    await check(urlOrPort, stringToScreen(options.screen));
+    const code = await check(urlOrPort, stringToScreen(options.screen), options.warningsAsErrors);
+    process.exit(code);
   });
 
 program.command('generate').
