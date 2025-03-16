@@ -21,9 +21,10 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
     };
   }
 
-  const icos =
-    head.querySelectorAll('link[rel="shortcut icon"]') ||
-    head.querySelectorAll('link[rel="icon"][type="image/x-icon"]');
+  const icos = [
+    ...head.querySelectorAll('link[rel="shortcut icon"]'),
+    ...head.querySelectorAll('link[rel="icon"][type="image/x-icon"]')
+  ];
 
   let iconUrl: string | null = null;
   let images;
