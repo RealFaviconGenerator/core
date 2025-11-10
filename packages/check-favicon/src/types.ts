@@ -134,7 +134,7 @@ export type TouchIconTitleReport = {
 
 export type TouchIconIconReport = {
   messages: CheckerMessage[],
-  touchIcon: string | null,
+  icon: CheckedIcon | null,
 }
 
 export type WebAppManifestReport = {
@@ -143,7 +143,7 @@ export type WebAppManifestReport = {
   shortName?: string,
   backgroundColor?: string,
   themeColor?: string,
-  icon: string | null
+  icon: CheckedIcon | null
 }
 
 export type FaviconReport = {

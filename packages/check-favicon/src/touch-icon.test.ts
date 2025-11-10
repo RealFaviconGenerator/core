@@ -1,5 +1,5 @@
 import { parse } from 'node-html-parser'
-import { CheckerMessage, CheckerStatus, FetchResponse, MessageId } from "./types";
+import { CheckedIcon, CheckerMessage, CheckerStatus, FetchResponse, MessageId } from "./types";
 import { checkTouchIcon, checkTouchIconIcon, checkTouchIconTitle, getDuplicatedSizes } from "./touch-icon";
 import { testFetcher } from './test-helper';
 import { bufferToDataUrl, filePathToReadableStream, readableStreamToBuffer } from './helper';
@@ -7,7 +7,7 @@ import { bufferToDataUrl, filePathToReadableStream, readableStreamToBuffer } fro
 type TestOutput = {
   messages: Pick<CheckerMessage, 'id' | 'status'>[],
   appTitle?: string,
-  touchIcon?: string | null
+  icon?: CheckedIcon | null,
 }
 
 const runCheckTouchIconTitleTest = async (
@@ -67,10 +67,10 @@ const runCheckTouchIconTest = async (
   const filteredMessages = result.messages.map(m => ({ status: m.status, id: m.id }));
   expect({
     messages: filteredMessages,
-    touchIcon: result.touchIcon
+    icon: result.icon
   }).toEqual({
     ...output,
-    touchIcon: output.touchIcon || null
+    icon: output.icon || null
   });
 }
 
@@ -98,7 +98,13 @@ test('checkTouchIcon - multipleTouchIcon - no size', async () => {
   }, {
     status: CheckerStatus.Error,
     id: MessageId.duplicatedTouchIconSizes,
-  }]}, {
+  }], icon: {
+      content: null,
+      url: 'https://example.com/some-icon.png',
+      width: null,
+      height: null
+    },
+  }, {
     'https://example.com/some-icon.png': {
       status: 200,
       contentType: 'image/png',
@@ -122,7 +128,14 @@ test('checkTouchIcon - multipleTouchIcon - specific size', async () => {
   }, {
     status: CheckerStatus.Error,
     id: MessageId.duplicatedTouchIconSizes,
-  }]}, {
+  }],
+    icon: {
+      content: null,
+      url: 'https://example.com/some-icon.png',
+      width: null,
+      height: null
+    },
+  }, {
     'https://example.com/some-icon.png': {
       status: 200,
       contentType: 'image/png',
@@ -150,7 +163,12 @@ test('checkTouchIcon - Regular case', async () => {
   },{
     status: CheckerStatus.Ok,
     id: MessageId.touchIconSquare
-  }], touchIcon: bufferToDataUrl(await readableStreamToBuffer(await filePathToReadableStream(testIcon)), 'image/png')
+  }], icon: {
+      content: bufferToDataUrl(await readableStreamToBuffer(await filePathToReadableStream(testIcon)), 'image/png'),
+      url: 'https://example.com/some-other-icon.png',
+      width: 180,
+      height: 180,
+    }
   }, {
     'https://example.com/some-other-icon.png': {
       status: 200,
@@ -159,7 +177,6 @@ test('checkTouchIcon - Regular case', async () => {
     }
   });
 })
-
 
 
 test('getDuplicatedSizes', () => {

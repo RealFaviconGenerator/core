@@ -191,6 +191,11 @@ test('checkWebAppManifestFile - Everything is fine', async () => {
     shortName: 'Short!',
     backgroundColor: '#123456',
     themeColor: '#abcdef',
-    icon: bufferToDataUrl(await readableStreamToBuffer(await filePathToReadableStream(testIcon512)), 'image/png')
+    icon: {
+      content: bufferToDataUrl(await readableStreamToBuffer(await filePathToReadableStream(testIcon512)), 'image/png'),
+      url: "https://example.com/icon-512.png",
+      width: 512,
+      height: 512,
+    },
   });
 })

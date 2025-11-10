@@ -257,5 +257,5 @@ export const checkWebAppManifestFile = async (manifest: any, baseUrl: string, fe
     }
   }
 
-  return { messages, name, shortName, backgroundColor, themeColor, icon: icon ? icon.content : null };
+  return { messages, name, shortName, backgroundColor, themeColor, icon };
 }

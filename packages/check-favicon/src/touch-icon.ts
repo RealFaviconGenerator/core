@@ -59,7 +59,7 @@ export const checkTouchIconTitle = async (baseUrl: string, head: HTMLElement | n
 
 export const checkTouchIconIcon = async (baseUrl: string, head: HTMLElement | null, fetcher: Fetcher = fetchFetcher): Promise<TouchIconIconReport> => {
   const messages: CheckerMessage[] = [];
-  let touchIcon: CheckIconOutput | null = null;
+  let icon: CheckIconOutput | null = null;
 
   if (!head) {
     messages.push({
@@ -68,7 +68,7 @@ export const checkTouchIconIcon = async (baseUrl: string, head: HTMLElement | nu
       text: 'No <head> element'
     });
 
-    return { messages, touchIcon };
+    return { messages, icon };
   }
 
   const iconMarkup = head.querySelectorAll("link[rel='apple-touch-icon']");
@@ -79,7 +79,7 @@ export const checkTouchIconIcon = async (baseUrl: string, head: HTMLElement | nu
       text: 'No touch icon declared'
     });
 
-    return { messages, touchIcon };
+    return { messages, icon };
   }
 
   messages.push({
@@ -105,7 +105,7 @@ export const checkTouchIconIcon = async (baseUrl: string, head: HTMLElement | nu
       text: 'The touch icon has no href'
     });
 
-    return { messages, touchIcon };
+    return { messages, icon };
   }
 
   const touchIconUrl = mergeUrlAndPath(baseUrl, iconHref);
@@ -169,14 +169,14 @@ export const checkTouchIconIcon = async (baseUrl: string, head: HTMLElement | nu
     }
   }
 
-  touchIcon = await checkIcon(
+  icon = await checkIcon(
     touchIconUrl,
     processor,
     fetcher,
     undefined
   );
 
-  return { messages, touchIcon: touchIcon ? touchIcon.content : null };
+  return { messages, icon };
 }
 
 export const getDuplicatedSizes = (sizes: (string | undefined)[]): (string | undefined)[] => {
@@ -191,6 +191,6 @@ export const checkTouchIcon = async (baseUrl: string, head: HTMLElement | null, 
   return {
     messages: [...titleReport.messages, ...iconReport.messages],
     appTitle: titleReport.appTitle,
-    touchIcon: iconReport.touchIcon
+    icon: iconReport.icon
   }
 }
