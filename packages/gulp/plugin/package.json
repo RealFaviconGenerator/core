@@ -1,6 +1,6 @@
 {
   "name": "@realfavicongenerator/gulp-real-favicon",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Generate a multiplatform favicon with RealFaviconGenerator and Gulp",
   "main": "dist/index.js",
   "bin": "./dist/index.js",
@@ -37,9 +37,9 @@
     "typescript": "^5.4.3"
   },
   "dependencies": {
-    "@realfavicongenerator/generate-favicon": "^0.5.0",
-    "@realfavicongenerator/image-adapter-node": "^0.5.0",
-    "@realfavicongenerator/inject-markups": "^0.5.0",
+    "@realfavicongenerator/generate-favicon": "^0.6.0",
+    "@realfavicongenerator/image-adapter-node": "^0.6.0",
+    "@realfavicongenerator/inject-markups": "^0.6.0",
     "@rollup/plugin-json": "^6.1.0",
     "fancy-log": "^2.0.0",
     "plugin-error": "^2.0.1",
