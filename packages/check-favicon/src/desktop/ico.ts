@@ -28,20 +28,16 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
 
   let iconUrl: string | null = null;
   let images;
+  let isDeclared = false;
 
-  if (icos.length === 0) {
-    messages.push({
-      status: CheckerStatus.Error,
-      id: MessageId.noIcoFavicon,
-      text: 'There is no ICO favicon'
-    });
-  } else if (icos.length > 1) {
+  if (icos.length > 1) {
     messages.push({
       status: CheckerStatus.Error,
       id: MessageId.multipleIcoFavicons,
       text: `There are ${icos.length} ICO favicons`
     });
-  } else {
+  } else if (icos.length === 1) {
+    isDeclared = true;
     messages.push({
       status: CheckerStatus.Ok,
       id: MessageId.icoFaviconDeclared,
@@ -57,58 +53,85 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
       });
     } else {
       iconUrl = mergeUrlAndPath(url, href);
-      const iconResponse = await fetcher(iconUrl, 'image/x-icon');
-      if (iconResponse.status === 404) {
+    }
+  } else {
+    // No declared ICO favicon, try the implicit /favicon.ico convention
+    iconUrl = mergeUrlAndPath(url, '/favicon.ico');
+  }
+
+  // If we have an iconUrl (either from declaration or implicit), try to fetch it
+  if (iconUrl) {
+    const iconResponse = await fetcher(iconUrl, 'image/x-icon');
+    if (iconResponse.status === 404) {
+      if (isDeclared) {
         messages.push({
           status: CheckerStatus.Error,
           id: MessageId.icoFavicon404,
           text: `ICO favicon not found at ${iconUrl}`
         });
-      } else if (iconResponse.status >= 300 || !iconResponse.readableStream) {
+      } else {
+        // Implicit favicon not found, report no ICO favicon
+        messages.push({
+          status: CheckerStatus.Error,
+          id: MessageId.noIcoFavicon,
+          text: 'There is no ICO favicon'
+        });
+        iconUrl = null;
+      }
+    } else if (iconResponse.status >= 300 || !iconResponse.readableStream) {
+      if (isDeclared) {
         messages.push({
           status: CheckerStatus.Error,
           id: MessageId.icoFaviconCannotGet,
           text: `Error fetching ICO favicon at ${iconUrl} (status ${iconResponse.status})`
         });
       } else {
+        // Implicit favicon cannot be fetched, report no ICO favicon
+        messages.push({
+          status: CheckerStatus.Error,
+          id: MessageId.noIcoFavicon,
+          text: 'There is no ICO favicon'
+        });
+        iconUrl = null;
+      }
+    } else {
+      messages.push({
+        status: CheckerStatus.Ok,
+        id: MessageId.icoFaviconDownloadable,
+        text: 'ICO favicon found'
+      });
+
+      const iconBuffer = await readableStreamToBuffer(iconResponse.readableStream);
+      images = await decodeIco(iconBuffer);
+
+      const imageSizes = images.map(image => `${image.width}x${image.height}`);
+
+      const expectedSizes = IcoFaviconSizes.map(size => `${size}x${size}`);
+
+      const extraSizes = imageSizes.filter(size => !expectedSizes.includes(size));
+      if (extraSizes.length > 0) {
+        messages.push({
+          status: CheckerStatus.Warning,
+          id: MessageId.icoFaviconExtraSizes,
+          text: `Extra sizes found in ICO favicon: ${extraSizes.join(', ')}`
+        });
+      }
+
+      const missingSizes = expectedSizes.filter(size => !imageSizes.includes(size));
+      if (missingSizes.length > 0) {
+        messages.push({
+          status: CheckerStatus.Warning,
+          id: MessageId.icoFaviconMissingSizes,
+          text: `Missing sizes in ICO favicon: ${missingSizes.join(', ')}`
+        });
+      }
+
+      if (extraSizes.length === 0 && missingSizes.length === 0) {
         messages.push({
           status: CheckerStatus.Ok,
-          id: MessageId.icoFaviconDownloadable,
-          text: 'ICO favicon found'
+          id: MessageId.icoFaviconExpectedSizes,
+          text: `The ICO favicon has the expected sizes (${imageSizes.join(', ')})`
         });
-
-        const iconBuffer = await readableStreamToBuffer(iconResponse.readableStream);
-        images = await decodeIco(iconBuffer);
-
-        const imageSizes = images.map(image => `${image.width}x${image.height}`);
-
-        const expectedSizes = IcoFaviconSizes.map(size => `${size}x${size}`);
-
-        const extraSizes = imageSizes.filter(size => !expectedSizes.includes(size));
-        if (extraSizes.length > 0) {
-          messages.push({
-            status: CheckerStatus.Warning,
-            id: MessageId.icoFaviconExtraSizes,
-            text: `Extra sizes found in ICO favicon: ${extraSizes.join(', ')}`
-          });
-        }
-
-        const missingSizes = expectedSizes.filter(size => !imageSizes.includes(size));
-        if (missingSizes.length > 0) {
-          messages.push({
-            status: CheckerStatus.Warning,
-            id: MessageId.icoFaviconMissingSizes,
-            text: `Missing sizes in ICO favicon: ${missingSizes.join(', ')}`
-          });
-        }
-
-        if (extraSizes.length === 0 && missingSizes.length === 0) {
-          messages.push({
-            status: CheckerStatus.Ok,
-            id: MessageId.icoFaviconExpectedSizes,
-            text: `The ICO favicon has the expected sizes (${imageSizes.join(', ')})`
-          });
-        }
       }
     }
   }

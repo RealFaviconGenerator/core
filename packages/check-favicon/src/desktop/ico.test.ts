@@ -67,6 +67,32 @@ test('checkIcoFavicon - noIcoFavicon', async () => {
   });
 })
 
+test('checkIcoFavicon - implicit /favicon.ico when not declared', async () => {
+  const testIconPath = './fixtures/simple-ico.ico';
+
+  await runIcoTest(`<title>Some text</title>`, {
+    messages: [{
+      status: CheckerStatus.Ok,
+      id: MessageId.icoFaviconDownloadable,
+    }, {
+      status: CheckerStatus.Ok,
+      id: MessageId.icoFaviconExpectedSizes,
+    }],
+    icon: {
+      content: "data:image/png;base64,placeholder", // Will be checked for format only
+      url: 'https://example.com/favicon.ico',
+      width: 48,
+      height: 48,
+    }
+  }, {
+    'https://example.com/favicon.ico': {
+      status: 200,
+      contentType: 'image/x-icon',
+      readableStream: await filePathToReadableStream(testIconPath)
+    }
+  });
+})
+
 test('checkIcoFavicon - multipleIcoFavicons with shortcut icon', async () => {
   await runIcoTest(`
   <link rel="shortcut icon" href="/favicon1.ico" />
