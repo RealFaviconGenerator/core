@@ -2,6 +2,7 @@ import { SVG, Style, Svg } from "@svgdotjs/svg.js";
 import { IconTransformation, IconTransformationType, MasterIcon, getCSSFilter, isCSSFilterTransformation, transformSvg } from "../icon/helper";
 import { DesktopIconSettings, hasDarkIcon } from "../icon/desktop";
 import { ImageAdapter } from "./adapter";
+import { stringToSvg } from ".";
 
 export const createDesktopSvgIcon = (
   masterIcon: MasterIcon,
@@ -27,7 +28,7 @@ export const createDesktopSvgIcon = (
     )
   ) {
     return createFilteredSvgIcon(
-      masterIcon.icon, settings.regularIconTransformation, settings.darkIconTransformation
+      masterIcon.icon, imageAdapter, settings.regularIconTransformation, settings.darkIconTransformation
     );
   }
 
@@ -43,8 +44,8 @@ export const createDesktopSvgIcon = (
   return combineLightAndDaskModeDesktopIcons(lightIcon, darkIcon, imageAdapter);
 };
 
-export const createFilteredSvgIcon = (image: Svg, lightSettings?: IconTransformation, darkSettings?: IconTransformation): Svg => {
-  const icon = image.clone();
+export const createFilteredSvgIcon = (image: Svg, imageAdapter: ImageAdapter, lightSettings?: IconTransformation, darkSettings?: IconTransformation): Svg => {
+  const icon = cloneSvg(image, imageAdapter);
 
   if (!lightSettings && !darkSettings) {
     return icon;
@@ -66,6 +67,11 @@ export const createFilteredSvgIcon = (image: Svg, lightSettings?: IconTransforma
 
   return icon;
 };
+
+export const cloneSvg = (svg: Svg, imageAdapter: ImageAdapter): Svg => {
+  const svgString = svg.svg();
+  return stringToSvg(svgString, imageAdapter);
+}
 
 export const combineLightAndDaskModeDesktopIcons = (lightIcon: Svg, darkIcon: Svg, imageAdapter: ImageAdapter): Svg => {
   const s = imageAdapter.createSvg().size(1000, 1000);

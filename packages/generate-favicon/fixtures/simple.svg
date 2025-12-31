@@ -1,0 +1,28 @@
+<svg width="300" height="130" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad">
+      <stop class="stop1" offset="0%"></stop>
+      <stop class="stop2" offset="50%"></stop>
+      <stop class="stop3" offset="100%"></stop>
+    </linearGradient>
+  </defs>
+
+  <style>
+    #rect {
+      fill: url(#grad);
+    }
+    .stop1 {
+      stop-color: red;
+    }
+    .stop2 {
+      stop-color: black;
+      stop-opacity: 0;
+    }
+    .stop3 {
+      stop-color: blue;
+    }
+  </style>
+
+  <rect id="rect" width="200" height="100" x="10" y="10" rx="20" ry="20"></rect>
+  Sorry, your browser does not support inline SVG.  
+</svg>

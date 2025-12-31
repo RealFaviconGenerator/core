@@ -2,6 +2,7 @@ import { SVG, Svg } from "@svgdotjs/svg.js";
 import { ImageAdapter } from "./adapter";
 import { numberAliasToNumber } from "../icon/helper";
 import { filterDoctypeOut } from "./helper";
+import { cloneSvg } from "./desktop";
 
 export const stringToSvg = (svg: string, imageAdapeter: ImageAdapter): Svg => {
   // We use filterDoctypeOut because of
@@ -103,7 +104,7 @@ export const scaleSvg = (svg: Svg, widthHeight: number, imageAdapeter: ImageAdap
   newSvg.size(widthHeight, widthHeight);
   const group = newSvg.group();
   group.attr('transform', `scale(${widthHeight / numberAliasToNumber(svg.width())})`);
-  group.add(svg.clone());
+  group.add(cloneSvg(svg, imageAdapeter));
 
   return newSvg;
 }
