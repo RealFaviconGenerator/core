@@ -2,8 +2,8 @@
   "name": "@realfavicongenerator/grunt-real-favicon",
   "version": "0.5.0",
   "description": "Generate a multiplatform favicon with RealFaviconGenerator and Grunt",
-  "main": "dist/index.js",
-  "bin": "./dist/index.js",
+  "main": "tasks/index.js",
+  "bin": "./tasks/index.js",
   "type": "commonjs",
   "scripts": {
     "build": "rollup -c rollup.config.mjs"
