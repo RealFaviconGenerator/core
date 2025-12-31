@@ -1,6 +1,6 @@
 {
   "name": "@realfavicongenerator/grunt-real-favicon",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Generate a multiplatform favicon with RealFaviconGenerator and Grunt",
   "main": "tasks/index.js",
   "bin": "./tasks/index.js",
