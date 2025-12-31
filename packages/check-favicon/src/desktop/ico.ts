@@ -95,6 +95,14 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
         iconUrl = null;
       }
     } else {
+      if (!isDeclared) {
+        messages.push({
+          status: CheckerStatus.Ok,
+          id: MessageId.icoFaviconImplicitInRoot,
+          text: 'An implicit ICO favicon is found at /favicon.ico'
+        });
+      }
+
       messages.push({
         status: CheckerStatus.Ok,
         id: MessageId.icoFaviconDownloadable,

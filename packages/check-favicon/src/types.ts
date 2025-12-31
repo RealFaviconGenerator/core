@@ -21,6 +21,7 @@ export enum MessageId {
   noIcoFavicon,
   multipleIcoFavicons,
   icoFaviconDeclared,
+  icoFaviconImplicitInRoot,
   noIcoFaviconHref,
   icoFavicon404,
   icoFaviconCannotGet,

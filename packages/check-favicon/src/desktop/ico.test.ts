@@ -73,6 +73,9 @@ test('checkIcoFavicon - implicit /favicon.ico when not declared', async () => {
   await runIcoTest(`<title>Some text</title>`, {
     messages: [{
       status: CheckerStatus.Ok,
+      id: MessageId.icoFaviconImplicitInRoot,
+    },{
+      status: CheckerStatus.Ok,
       id: MessageId.icoFaviconDownloadable,
     }, {
       status: CheckerStatus.Ok,
