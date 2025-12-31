@@ -102,7 +102,7 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
       });
 
       const iconBuffer = await readableStreamToBuffer(iconResponse.readableStream);
-      images = await decodeIco(iconBuffer);
+      images = decodeIco(iconBuffer);
 
       const imageSizes = images.map(image => `${image.width}x${image.height}`);
 
@@ -136,7 +136,6 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
     }
   }
 
-  let content: string | null = null;
   const theIcon: CheckedIcon = {
     content: null,
     url: iconUrl,
@@ -146,7 +145,7 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
   if (images) {
     const image = images[0];
     const mimeType = (image.type === "bmp") ? "image/bmp" : "image/png";
-    theIcon.content = await bufferToDataUrl(Buffer.from(image.data), mimeType);
+    theIcon.content = bufferToDataUrl(Buffer.from(image.data.buffer, image.data.byteOffset, image.data.byteLength), mimeType);
     theIcon.width = image.width;
     theIcon.height = image.height;
   }
