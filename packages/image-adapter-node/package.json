@@ -38,7 +38,7 @@
   "dependencies": {
     "@realfavicongenerator/generate-favicon": "^0.6.0",
     "@svgdotjs/svg.js": "^3.2.0",
-    "sharp": "^0.32.6",
+    "sharp": "^0.34.5",
     "svgdom": "^0.1.19"
   }
 }
