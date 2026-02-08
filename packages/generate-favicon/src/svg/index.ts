@@ -13,8 +13,30 @@ export const stringToSvg = (svg: string, imageAdapeter: ImageAdapter): Svg => {
   const subSvg: any = s.find('svg')[0];
   if (subSvg) {
     const viewBox = subSvg.viewbox();
+    const innerAttrs: Record<string, any> = subSvg.attr();
+
+    // Remove outer SVG attributes that aren't on the inner SVG
+    const outerAttrs: Record<string, any> = s.attr();
+    for (const key of Object.keys(outerAttrs)) {
+      if (!(key in innerAttrs)) {
+        s.attr(key, null);
+      }
+    }
+
+    // Copy all attributes from inner SVG to outer SVG
+    for (const [key, value] of Object.entries(innerAttrs)) {
+      s.attr(key, value);
+    }
+
+    // Set width/height, falling back to viewBox dimensions if not explicit
     s.width(subSvg.width() ? subSvg.width() : viewBox.width);
     s.height(subSvg.height() ? subSvg.height() : viewBox.height);
+
+    // Move children from inner SVG to outer SVG and remove the nested SVG
+    while (subSvg.children().length > 0) {
+      s.add(subSvg.children()[0]);
+    }
+    subSvg.remove();
   }
 
   return s;
