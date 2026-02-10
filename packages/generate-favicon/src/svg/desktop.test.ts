@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { cloneSvg, createFilteredSvgIcon } from './desktop';
+import { cloneSvg, combineLightAndDaskModeDesktopIcons, createFilteredSvgIcon } from './desktop';
 import { initTransformation, IconTransformationType } from '../icon/helper';
 import { stringToSvg } from '../svg';
 import { getNodeImageAdapter } from '@realfavicongenerator/image-adapter-node';
@@ -23,6 +23,20 @@ test("createFilteredSvgIcon - Issue #3", async () => {
   const resultSvg = result.svg();
 
   expect(resultSvg).toEqual(expectedOutput.trim());
+});
+
+test("combineLightAndDaskModeDesktopIcons wraps icons with media query toggling", async () => {
+  const imageAdapter = await getNodeImageAdapter();
+
+  const lightIcon = stringToSvg('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="white" width="100" height="100"/></svg>', imageAdapter);
+  const darkIcon = stringToSvg('<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="black" width="100" height="100"/></svg>', imageAdapter);
+
+  const result = combineLightAndDaskModeDesktopIcons(lightIcon, darkIcon, imageAdapter);
+  const resultSvg = result.svg();
+
+  expect(resultSvg).toContain('id="light-icon"');
+  expect(resultSvg).toContain('id="dark-icon"');
+  expect(resultSvg).toContain('prefers-color-scheme: dark');
 });
 
 test("cloneSvg creates a deep copy of the SVG", async () => {
