@@ -2,14 +2,14 @@ import fs from 'fs/promises';
 import path from 'path';
 import { cloneSvg, combineLightAndDaskModeDesktopIcons, createDesktopSvgIcon, createFilteredSvgIcon } from './desktop';
 import { initTransformation, IconTransformationType } from '../icon/helper';
-import { initDesktopIconSettings } from '../icon/desktop';
+import { DesktopIconSettings, initDesktopIconSettings } from '../icon/desktop';
 import { stringToSvg } from '../svg';
 import { getNodeImageAdapter } from '@realfavicongenerator/image-adapter-node';
 
 const INPUT_SVG = '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect fill="red" width="100" height="100"/></svg>';
 
 describe('createDesktopSvgIcon', () => {
-  it("with no dark icon and no transformation uses optimization path with filter:none media queries", async () => {
+  it("with no dark icon and no transformation returns the icon as-is", async () => {
     const imageAdapter = await getNodeImageAdapter();
     const svg = stringToSvg(INPUT_SVG, imageAdapter);
 
@@ -21,10 +21,6 @@ describe('createDesktopSvgIcon', () => {
     expect(resultSvg).toEqual(
       '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">' +
       '<rect fill="red" width="100" height="100"></rect>' +
-      '<style>' +
-      '@media (prefers-color-scheme: light) { :root { filter: none; } }\n' +
-      '@media (prefers-color-scheme: dark) { :root { filter: none; } }\n' +
-      '</style>' +
       '</svg>'
     );
   });
@@ -33,9 +29,9 @@ describe('createDesktopSvgIcon', () => {
     const imageAdapter = await getNodeImageAdapter();
     const svg = stringToSvg(INPUT_SVG, imageAdapter);
 
-    const settings = {
+    const settings: DesktopIconSettings = {
       regularIconTransformation: initTransformation(IconTransformationType.Brightness, {}),
-      darkIconType: 'none' as const,
+      darkIconType: 'none',
       darkIconTransformation: initTransformation(IconTransformationType.None, {})
     };
 
@@ -47,12 +43,10 @@ describe('createDesktopSvgIcon', () => {
       '<rect fill="red" width="100" height="100"></rect>' +
       '<style>' +
       '@media (prefers-color-scheme: light) { :root { filter: contrast(1) brightness(1); } }\n' +
-      '@media (prefers-color-scheme: dark) { :root { filter: none; } }\n' +
       '</style>' +
       '</svg>'
     );
     expect(resultSvg).toContain('@media (prefers-color-scheme: light) { :root { filter: contrast(1) brightness(1); } }');
-    expect(resultSvg).toContain('@media (prefers-color-scheme: dark) { :root { filter: none; } }');
     expect(resultSvg).not.toContain('#light-icon');
     expect(resultSvg).not.toContain('#dark-icon');
   });

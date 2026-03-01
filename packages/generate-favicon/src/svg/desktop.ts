@@ -9,6 +9,11 @@ export const createDesktopSvgIcon = (
   settings: DesktopIconSettings,
   imageAdapter: ImageAdapter
 ): Svg => {
+  // No transformation and no dark icon variant: return the icon as-is
+  if (!hasDarkIcon(settings) && settings.regularIconTransformation.type === IconTransformationType.None) {
+    return cloneSvg(masterIcon.icon, imageAdapter);
+  }
+
   // Special case for icons that only play with brightness or color inversion
   if (
     (
@@ -28,7 +33,8 @@ export const createDesktopSvgIcon = (
     )
   ) {
     return createFilteredSvgIcon(
-      masterIcon.icon, imageAdapter, settings.regularIconTransformation, settings.darkIconTransformation
+      masterIcon.icon, imageAdapter, settings.regularIconTransformation,
+      hasDarkIcon(settings) ? settings.darkIconTransformation : undefined
     );
   }
 
