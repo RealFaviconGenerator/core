@@ -115,6 +115,37 @@ describe('createDesktopSvgIcon', () => {
     expect(resultSvg).not.toContain('#dark-icon');
   });
 
+  // https://github.com/RealFaviconGenerator/realfavicongenerator/issues/549
+  it("with no transformation and no dark icon, preserves embedded dark mode media queries", async () => {
+    const imageAdapter = await getNodeImageAdapter();
+
+    const SVG_WITH_DARK_MODE =
+      '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">' +
+      '<style>:root { fill: darkblue; } @media (prefers-color-scheme: dark) { :root { fill: white; } }</style>' +
+      '<rect fill="currentColor" width="100" height="100"/>' +
+      '</svg>';
+
+    const svg = stringToSvg(SVG_WITH_DARK_MODE, imageAdapter);
+    const settings = initDesktopIconSettings(); // no transformation, no dark icon
+
+    const result = createDesktopSvgIcon({ icon: svg }, settings, imageAdapter);
+    const resultSvg = result.svg();
+
+    expect(resultSvg).toEqual(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100">' +
+      '<style>:root { fill: darkblue; } @media (prefers-color-scheme: dark) { :root { fill: white; } }</style>' +
+      '<rect fill="currentColor" width="100" height="100"></rect>' +
+      '</svg>'
+    );
+    // Existing dark mode media queries must be preserved
+    expect(resultSvg).toContain('@media (prefers-color-scheme: dark)');
+    expect(resultSvg).toContain('fill: white');
+    // Must not add extra, broken media queries
+    expect(resultSvg).not.toContain('filter: none');
+    // Must not create excessive SVG nesting (triple-nested SVGs)
+    expect((resultSvg.match(/<svg/g) || []).length).toBeLessThanOrEqual(1);
+  });
+
   it("with specific dark icon bypasses optimization and returns combined light/dark icon", async () => {
     const imageAdapter = await getNodeImageAdapter();
     const lightIcon = stringToSvg(
