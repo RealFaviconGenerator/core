@@ -1,5 +1,5 @@
 {
-  "name": "sandbox",
+  "name": "rfg-sandbox",
   "version": "0.6.3",
   "description": "Just a playground project to run @realfavicongenerator code locally",
   "main": "index.ts",
