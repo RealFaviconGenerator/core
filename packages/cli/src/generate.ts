@@ -3,27 +3,14 @@ import { FaviconSettings, MasterIcon, bitmapToSvg, dataUrlToSvg, generateFavicon
 import { getNodeImageAdapter, loadAndConvertToSvg } from "@realfavicongenerator/image-adapter-node";
 import { Svg } from "@svgdotjs/svg.js";
 
-const toBuffer = async (data: string | Buffer | Blob): Promise<Buffer> => {
-  if (data instanceof Buffer) {
-    return data;
-  }
+const toBuffer = async (data: string | Buffer | Blob): Promise<Uint8Array> => {
   if (data instanceof Blob) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (reader.result instanceof ArrayBuffer) {
-          resolve(Buffer.from(reader.result));
-        } else {
-          reject(new Error('Failed to convert Blob to Buffer'));
-        }
-      };
-      reader.onerror = () => {
-        reject(new Error('Failed to read Blob'));
-      };
-      reader.readAsArrayBuffer(data);
-    });
+    return new Uint8Array(await data.arrayBuffer());
   }
-  return Buffer.from(data, 'utf8');
+  if (data instanceof Buffer) {
+    return Uint8Array.from(data);
+  }
+  return Uint8Array.from(Buffer.from(data, 'utf8'));
 }
 
 export const generate = async (imagePath: string, settingsPath: string, outputData: string, assetsDir: string) => {
@@ -51,5 +38,5 @@ export const generate = async (imagePath: string, settingsPath: string, outputDa
 
   // Generate HTML
   const html = await generateFaviconHtml(faviconSettings);
-  fs.writeFile(outputData, JSON.stringify(html, null, 2));
+  await fs.writeFile(outputData, JSON.stringify(html, null, 2));
 }
