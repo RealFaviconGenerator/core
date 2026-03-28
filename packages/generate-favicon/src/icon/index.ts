@@ -17,7 +17,8 @@ export type FaviconIconSettings = {
 
 export type FaviconSettings = {
   icon: FaviconIconSettings,
-  path: string
+  path: string,
+  skipMetadataInjection?: boolean,
 }
 
 export type EditedIcon = {
@@ -44,12 +45,14 @@ export const generateFaviconFiles = async (
     await generateDesktopFaviconFiles(
       masterIcon,
       settings.icon.desktop,
-      imageAdapter
+      imageAdapter,
+      settings.skipMetadataInjection
     ),
     await generateTouchIconFiles(
       masterIcon,
       settings.icon.touch,
-      imageAdapter
+      imageAdapter,
+      settings.skipMetadataInjection
     ),
     await generateWebAppManifestIconFiles(
       masterIcon,
@@ -57,7 +60,8 @@ export const generateFaviconFiles = async (
       settings.path,
       imageAdapter,
       pathTransformer,
-      fileNameTransformer
+      fileNameTransformer,
+      settings.skipMetadataInjection
     )
   )
 );

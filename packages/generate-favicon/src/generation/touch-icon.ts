@@ -24,7 +24,7 @@ export const generateTouchIconHtml = (faviconPath: string, appTitle: string | nu
   return { markups, cssSelectors };
 }
 
-export const generateTouchIconFiles = async (masterIcon: MasterIcon, settings: TouchIconSettings, imageAdapeter: ImageAdapter): Promise<FaviconFiles> => {
+export const generateTouchIconFiles = async (masterIcon: MasterIcon, settings: TouchIconSettings, imageAdapeter: ImageAdapter, skipMetadata = false): Promise<FaviconFiles> => {
   const transformedIcon = transformSvg(
     masterIcon.icon, settings.transformation, imageAdapeter, TouchIconPngSize
   );
@@ -34,6 +34,6 @@ export const generateTouchIconFiles = async (masterIcon: MasterIcon, settings: T
   );
 
   return {
-    [TouchIconFileName]: addRfgMetadataToPng(touchIcon)
+    [TouchIconFileName]: skipMetadata ? touchIcon : addRfgMetadataToPng(touchIcon)
   };
 }

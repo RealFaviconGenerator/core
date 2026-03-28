@@ -45,6 +45,7 @@ export const generateWebAppManifestIconFiles = async (
   imageAdapter: ImageAdapter,
   pathTransformer: FaviconAssetPathTransformer = identityFaviconAssetPathTransformer,
   fileNameTransformer: FaviconAssetFileNameTransformer = identityFaviconAssetFileNameTransformer,
+  skipMetadata = false,
 ): Promise<FaviconFiles> => {
   const transformedIcon = transformSvg(
     masterIcon.icon, settings.transformation, imageAdapter, 512
@@ -79,8 +80,8 @@ export const generateWebAppManifestIconFiles = async (
   };
 
   return {
-    [fileNameTransformer(WebAppManifest192x192IconFileName)]: addRfgMetadataToPng(androidnIcon192),
-    [fileNameTransformer(WebAppManifest512x512IconFileName)]: addRfgMetadataToPng(androidnIcon512),
+    [fileNameTransformer(WebAppManifest192x192IconFileName)]: skipMetadata ? androidnIcon192 : addRfgMetadataToPng(androidnIcon192),
+    [fileNameTransformer(WebAppManifest512x512IconFileName)]: skipMetadata ? androidnIcon512 : addRfgMetadataToPng(androidnIcon512),
     [fileNameTransformer(SiteWebManifestFileName)]: generateWebManifest(webManifest)
   };
 }

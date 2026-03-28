@@ -41,7 +41,7 @@ export const generateDesktopFaviconHtml = (faviconPath: string, transformer: Fav
   };
 }
 
-export const generateDesktopFaviconFiles = async (masterIcon: MasterIcon, settings: DesktopIconSettings, imageAdapter: ImageAdapter): Promise<FaviconFiles> => {
+export const generateDesktopFaviconFiles = async (masterIcon: MasterIcon, settings: DesktopIconSettings, imageAdapter: ImageAdapter, skipMetadata = false): Promise<FaviconFiles> => {
   const transformedRegularSvg = transformSvg(
     masterIcon.icon, settings.regularIconTransformation, imageAdapter, 128
   );
@@ -63,8 +63,8 @@ export const generateDesktopFaviconFiles = async (masterIcon: MasterIcon, settin
   const ico = imagesToIco(pics);
 
   return {
-    [SvgFaviconFileName]: addRfgMetadataToSvg(theSvg.svg()),
-    [PngFaviconFileName]: addRfgMetadataToPng(regularIcon),
+    [SvgFaviconFileName]: skipMetadata ? theSvg.svg() : addRfgMetadataToSvg(theSvg.svg()),
+    [PngFaviconFileName]: skipMetadata ? regularIcon : addRfgMetadataToPng(regularIcon),
     [IcoFaviconFileName]: ico
   };
 }
