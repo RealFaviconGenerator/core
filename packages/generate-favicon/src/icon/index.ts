@@ -19,6 +19,7 @@ export type FaviconSettings = {
   icon: FaviconIconSettings,
   path: string,
   skipMetadataInjection?: boolean,
+  version?: string,
 }
 
 export type EditedIcon = {
@@ -61,7 +62,8 @@ export const generateFaviconFiles = async (
       imageAdapter,
       pathTransformer,
       fileNameTransformer,
-      settings.skipMetadataInjection
+      settings.skipMetadataInjection,
+      settings.version
     )
   )
 );
@@ -70,9 +72,9 @@ export const generateFaviconHtml = (
   settings: FaviconSettings,
   transformer: FaviconAssetPathTransformer = identityFaviconAssetPathTransformer
 ): FaviconMarkups => {
-  const desktop = generateDesktopFaviconHtml(settings.path, transformer);
-  const touch = generateTouchIconHtml(settings.path, settings.icon.touch.appTitle, transformer);
-  const webAppManifest = generateWebAppManifestHtml(settings.path, transformer);
+  const desktop = generateDesktopFaviconHtml(settings.path, transformer, settings.version);
+  const touch = generateTouchIconHtml(settings.path, settings.icon.touch.appTitle, transformer, settings.version);
+  const webAppManifest = generateWebAppManifestHtml(settings.path, transformer, settings.version);
 
   return {
     markups: [

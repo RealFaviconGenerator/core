@@ -26,12 +26,12 @@ function blobToBuffer(blob: Blob): Promise<Buffer> {
   });
 }
 
-export const generateDesktopFaviconHtml = (faviconPath: string, transformer: FaviconAssetPathTransformer = identityFaviconAssetPathTransformer): FaviconMarkups => {
+export const generateDesktopFaviconHtml = (faviconPath: string, transformer: FaviconAssetPathTransformer = identityFaviconAssetPathTransformer, version?: string): FaviconMarkups => {
   return {
     markups: [
-      `<link rel="icon" type="image/png" href="${transformer(`${faviconPath}${PngFaviconFileName}`, true, false)}" sizes="${PngFaviconFileSize}x${PngFaviconFileSize}" />`,
-      `<link rel="icon" type="image/svg+xml" href="${transformer(`${faviconPath}${SvgFaviconFileName}`, true, false)}" />`,
-      `<link rel="shortcut icon" href="${transformer(`${faviconPath}${IcoFaviconFileName}`, true, false)}" />`
+      `<link rel="icon" type="image/png" href="${transformer(`${faviconPath}${PngFaviconFileName}`, true, false, version)}" sizes="${PngFaviconFileSize}x${PngFaviconFileSize}" />`,
+      `<link rel="icon" type="image/svg+xml" href="${transformer(`${faviconPath}${SvgFaviconFileName}`, true, false, version)}" />`,
+      `<link rel="shortcut icon" href="${transformer(`${faviconPath}${IcoFaviconFileName}`, true, false, version)}" />`
     ],
     cssSelectors: [
       `link[rel="icon"][type="image/png"]`,

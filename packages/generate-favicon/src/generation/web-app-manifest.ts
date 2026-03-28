@@ -27,10 +27,10 @@ export const SiteWebManifestFileName           = 'site.webmanifest';
 export const WebAppManifest192x192IconFileName = 'web-app-manifest-192x192.png';
 export const WebAppManifest512x512IconFileName = 'web-app-manifest-512x512.png';
 
-export const generateWebAppManifestHtml = (faviconPath: string, transformer: FaviconAssetPathTransformer = identityFaviconAssetPathTransformer): FaviconMarkups => {
+export const generateWebAppManifestHtml = (faviconPath: string, transformer: FaviconAssetPathTransformer = identityFaviconAssetPathTransformer, version?: string): FaviconMarkups => {
   return {
     markups: [
-      `<link rel="manifest" href="${transformer(`${faviconPath}${SiteWebManifestFileName}`, false, false)}" />`
+      `<link rel="manifest" href="${transformer(`${faviconPath}${SiteWebManifestFileName}`, false, false, version)}" />`
     ],
     cssSelectors: [
       `link[rel="manifest"]`
@@ -46,6 +46,7 @@ export const generateWebAppManifestIconFiles = async (
   pathTransformer: FaviconAssetPathTransformer = identityFaviconAssetPathTransformer,
   fileNameTransformer: FaviconAssetFileNameTransformer = identityFaviconAssetFileNameTransformer,
   skipMetadata = false,
+  version?: string,
 ): Promise<FaviconFiles> => {
   const transformedIcon = transformSvg(
     masterIcon.icon, settings.transformation, imageAdapter, 512
@@ -62,13 +63,13 @@ export const generateWebAppManifestIconFiles = async (
     short_name: settings.shortName,
     icons: [
       {
-        src: pathTransformer(`${faviconPath}${WebAppManifest192x192IconFileName}`, true, true),
+        src: pathTransformer(`${faviconPath}${WebAppManifest192x192IconFileName}`, true, true, version),
         sizes: '192x192',
         type: 'image/png',
         purpose: 'maskable'
       },
       {
-        src: pathTransformer(`${faviconPath}${WebAppManifest512x512IconFileName}`, true, true),
+        src: pathTransformer(`${faviconPath}${WebAppManifest512x512IconFileName}`, true, true, version),
         sizes: '512x512',
         type: 'image/png',
         purpose: 'maskable'

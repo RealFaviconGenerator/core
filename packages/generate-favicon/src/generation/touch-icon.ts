@@ -8,9 +8,9 @@ import { addRfgMetadataToPng } from "../metadata";
 export const TouchIconFileName = 'apple-touch-icon.png';
 export const TouchIconPngSize = 180;
 
-export const generateTouchIconHtml = (faviconPath: string, appTitle: string | null, transformer: FaviconAssetPathTransformer = identityFaviconAssetPathTransformer): FaviconMarkups => {
+export const generateTouchIconHtml = (faviconPath: string, appTitle: string | null, transformer: FaviconAssetPathTransformer = identityFaviconAssetPathTransformer, version?: string): FaviconMarkups => {
   const markups = [
-    `<link rel="apple-touch-icon" sizes="180x180" href="${transformer(`${faviconPath}${TouchIconFileName}`, true, false)}" />`,
+    `<link rel="apple-touch-icon" sizes="180x180" href="${transformer(`${faviconPath}${TouchIconFileName}`, true, false, version)}" />`,
   ];
   const cssSelectors = [
     `link[rel="apple-touch-icon"]`
