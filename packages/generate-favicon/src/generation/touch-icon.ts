@@ -3,6 +3,7 @@ import { MasterIcon, transformSvg } from "../icon/helper";
 import { TouchIconSettings } from "../icon/ios";
 import { scaleSvg } from "../svg";
 import { ImageAdapter } from "../svg/adapter";
+import { addRfgMetadataToPng } from "../metadata";
 
 export const TouchIconFileName = 'apple-touch-icon.png';
 export const TouchIconPngSize = 180;
@@ -33,6 +34,6 @@ export const generateTouchIconFiles = async (masterIcon: MasterIcon, settings: T
   );
 
   return {
-    [TouchIconFileName]: touchIcon
+    [TouchIconFileName]: addRfgMetadataToPng(touchIcon)
   };
 }

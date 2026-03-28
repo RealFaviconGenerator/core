@@ -33,7 +33,7 @@ export const imagesToIco = (images: ImageAndMeta[]) => {
 		imageDataArr.push(bmpInfoHeader, dib);
 	});
 
-	return Buffer.concat(headerAndIconDir.concat(imageDataArr), len);
+	return Buffer.concat(headerAndIconDir.concat(imageDataArr) as unknown as Uint8Array[], len);
 }
 
 // https://en.wikipedia.org/wiki/ICO_(file_format)

@@ -3,6 +3,7 @@ import { MasterIcon, transformSvg } from "../icon/helper";
 import { WebAppManifestSettings } from "../icon/web-app-manifest";
 import { scaleSvg } from "../svg";
 import { ImageAdapter } from "../svg/adapter";
+import { addRfgMetadataToPng } from "../metadata";
 
 export type WebManifest = {
   name: string,
@@ -78,8 +79,8 @@ export const generateWebAppManifestIconFiles = async (
   };
 
   return {
-    [fileNameTransformer(WebAppManifest192x192IconFileName)]: androidnIcon192,
-    [fileNameTransformer(WebAppManifest512x512IconFileName)]: androidnIcon512,
+    [fileNameTransformer(WebAppManifest192x192IconFileName)]: addRfgMetadataToPng(androidnIcon192),
+    [fileNameTransformer(WebAppManifest512x512IconFileName)]: addRfgMetadataToPng(androidnIcon512),
     [fileNameTransformer(SiteWebManifestFileName)]: generateWebManifest(webManifest)
   };
 }

@@ -6,6 +6,7 @@ import { DesktopIconSettings } from "../icon/desktop";
 import { ImageAdapter } from "../svg/adapter";
 import { convertSvgToDataUrl } from "../helper";
 import { scaleSvg } from "../svg";
+import { addRfgMetadataToPng, addRfgMetadataToSvg } from "../metadata";
 
 export const PngFaviconFileSize = 96;
 
@@ -62,8 +63,8 @@ export const generateDesktopFaviconFiles = async (masterIcon: MasterIcon, settin
   const ico = imagesToIco(pics);
 
   return {
-    [SvgFaviconFileName]: theSvg.svg(),
-    [PngFaviconFileName]: regularIcon,
+    [SvgFaviconFileName]: addRfgMetadataToSvg(theSvg.svg()),
+    [PngFaviconFileName]: addRfgMetadataToPng(regularIcon),
     [IcoFaviconFileName]: ico
   };
 }
