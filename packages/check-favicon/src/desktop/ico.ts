@@ -110,7 +110,7 @@ export const checkIcoFavicon = async (url: string, head: HTMLElement | null, fet
       });
 
       const iconBuffer = await readableStreamToBuffer(iconResponse.readableStream);
-      images = decodeIco(iconBuffer);
+      images = decodeIco(new Uint8Array(iconBuffer));
 
       const imageSizes = images.map(image => `${image.width}x${image.height}`);
 
