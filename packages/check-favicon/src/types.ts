@@ -148,6 +148,7 @@ export type WebAppManifestReport = {
 }
 
 export type FaviconReport = {
+  pageTitle?: string,
   desktop: DesktopFaviconReport,
   touchIcon: TouchIconReport,
   webAppManifest: WebAppManifestReport
