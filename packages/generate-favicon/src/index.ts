@@ -5,7 +5,8 @@ export {
 
 export {
   bitmapToSvg, stringToSvg,
-  anyUrlToSvg, dataUrlToSvg
+  anyUrlToSvg, dataUrlToSvg,
+  resolveLengthToPixels
 } from './svg/index';
 
 export {

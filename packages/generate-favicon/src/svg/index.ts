@@ -4,6 +4,48 @@ import { numberAliasToNumber } from "../icon/helper";
 import { filterDoctypeOut } from "./helper";
 import { cloneSvg } from "./desktop";
 
+// CSS absolute length units, expressed in pixels at the reference 96 DPI used
+// by the SVG rasterizers (resvg/librsvg via sharp). Relative units (%, em, ...)
+// are intentionally absent: they cannot be resolved to a fixed pixel size here.
+const CSS_UNIT_TO_PX: Record<string, number> = {
+  px: 1,
+  in: 96,
+  cm: 96 / 2.54,
+  mm: 96 / 25.4,
+  pt: 96 / 72,
+  pc: 16,
+};
+
+// Resolve an SVG width/height value to user-space pixels.
+//
+// The scaling math in `transformSvg`/`innerImageTransform` interprets the
+// master's width/height as user units, but the rasterizer renders the embedded
+// SVG at the physical size implied by its unit (e.g. `81.844mm` -> ~309px at
+// 96 DPI). When a physical unit is left in place these two disagree, the
+// artwork is scaled far too large, and only its top-left corner survives inside
+// the icon (see the cropped-favicon reports for SVGs exported by Inkscape).
+// Converting the value to pixels keeps both interpretations consistent.
+//
+// Returns `undefined` for values that cannot be resolved to an absolute size
+// (relative units, unparseable input) so the caller can fall back to the
+// viewBox dimensions.
+export const resolveLengthToPixels = (value: number | string): number | undefined => {
+  if (typeof value === 'number') {
+    return value;
+  }
+  const match = /^\s*([+-]?[\d.]+)\s*([a-z%]*)\s*$/i.exec(value);
+  if (!match) {
+    return undefined;
+  }
+  const amount = parseFloat(match[1]);
+  const unit = match[2].toLowerCase();
+  if (unit === '') {
+    return amount;
+  }
+  const factor = CSS_UNIT_TO_PX[unit];
+  return factor === undefined ? undefined : amount * factor;
+};
+
 export const stringToSvg = (svg: string, imageAdapeter: ImageAdapter): Svg => {
   // We use filterDoctypeOut because of
   // https://github.com/RealFaviconGenerator/realfavicongenerator/issues/507
@@ -28,9 +70,14 @@ export const stringToSvg = (svg: string, imageAdapeter: ImageAdapter): Svg => {
       s.attr(key, value);
     }
 
-    // Set width/height, falling back to viewBox dimensions if not explicit
-    s.width(subSvg.width() ? subSvg.width() : viewBox.width);
-    s.height(subSvg.height() ? subSvg.height() : viewBox.height);
+    // Set width/height, falling back to viewBox dimensions if not explicit or
+    // if the value carries a unit that cannot be resolved to absolute pixels.
+    // Physical units (mm, cm, in, ...) are converted so the downstream scaling
+    // math agrees with how the rasterizer sizes the embedded SVG.
+    const resolvedWidth = subSvg.width() ? resolveLengthToPixels(subSvg.width()) : undefined;
+    const resolvedHeight = subSvg.height() ? resolveLengthToPixels(subSvg.height()) : undefined;
+    s.width(resolvedWidth !== undefined ? resolvedWidth : viewBox.width);
+    s.height(resolvedHeight !== undefined ? resolvedHeight : viewBox.height);
 
     // Move children from inner SVG to outer SVG and remove the nested SVG
     while (subSvg.children().length > 0) {
